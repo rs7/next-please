@@ -1,0 +1,25 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'org.gradlefx', name: 'gradlefx', version: '1.1'
+    }
+}
+
+apply plugin: 'gradlefx'
+apply plugin: 'ide'
+
+frameworkLinkage = 'merged'
+mainClass = 'rs7.nextPlease.Main'
+output = 'next-please-gradle'
+playerVersion = '16.0'
+resourceDirs = []
+srcDirs = ['/src']
+testDirs = ['/test']
+testResourceDirs = []
+type = 'swf'
+
+additionalCompilerOptions = [
+  "-target-player=$playerVersion"
+]
