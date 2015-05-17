@@ -1,0 +1,9 @@
+task clean(type:Exec) {
+    commandLine 'mysql', '--user=root', '--password=mysql'
+    standardInput file('src/clean.sql').newInputStream()
+}
+
+task schema(type:Exec, dependsOn:clean) {
+    commandLine 'mysql', '--user=root', '--password=mysql'
+    standardInput file('src/schema.sql').newInputStream()
+}
