@@ -1,0 +1,6 @@
+# Путь до установленного FlexSDK
+flexSDKPath = c:/Path/to/Flex/SDK
+
+# Доступ к next-please-repo (bitbucket)
+bitbucketLogin = username
+bitbucketPassword = password

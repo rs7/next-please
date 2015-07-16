@@ -3,17 +3,22 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'org.gradlefx', name: 'gradlefx', version: '1.1'
+        classpath group: 'org.gradlefx', name: 'gradlefx', version: '1.3.0'
     }
 }
 
 apply plugin: 'gradlefx'
-apply plugin: 'ide'
+apply plugin: 'ideafx'
 
+ext {
+    swfVersion = '18.0'
+}
+
+flexHome = flexSDKPath
 frameworkLinkage = 'merged'
 mainClass = 'rs7.nextPlease.Main'
 output = 'next-please-gradle'
-playerVersion = '16.0'
+playerVersion = swfVersion
 resourceDirs = []
 srcDirs = ['/src']
 testDirs = ['/test']
@@ -21,11 +26,19 @@ testResourceDirs = []
 type = 'swf'
 
 additionalCompilerOptions = [
-  "-target-player=$playerVersion"
+  "-target-player=$swfVersion"
 ]
 
+repositories {
+    maven {
+        credentials {
+            username bitbucketLogin
+            password bitbucketPassword
+        }
+        url 'https://api.bitbucket.org/1.0/repositories/rs7/next-please-repo/raw/master/'
+    }
+}
+
 dependencies {
-    merged files(
-        'libs/robotlegs-framework-v2.2.1.swc'
-    )
+    internal group: 'robotlegs', name: 'robotlegs-framework', version: '2.2.1', ext: 'swc'
 }
