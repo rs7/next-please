@@ -41,7 +41,7 @@ dependencies {
 flexHome = flexSDKPath
 flexSdkName = Paths.get(flexSDKPath).fileName
 frameworkLinkage = 'merged'
-mainClass = 'rs7.nextPlease.Main'
+mainClass = 'rs7.nextPlease.Application'
 output = 'next-please-gradle'
 playerVersion = swfVersion
 resourceDirs = []

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<s:SkinnableContainer
+    xmlns:collections="org.apache.flex.collections.*"
+    xmlns:fx="http://ns.adobe.com/mxml/2009"
+    xmlns:s="library://ns.adobe.com/flex/spark"
+>
+    <fx:Declarations>
+        <collections:VectorCollection id="dataProvider"/>
+    </fx:Declarations>
+    
+    <s:SkinnableDataContainer dataProvider="{dataProvider}" itemRenderer="rs7.nextPlease.component.UserItemRenderer">
+        <s:layout>
+            <s:VerticalLayout/>
+        </s:layout>
+    </s:SkinnableDataContainer>
+</s:SkinnableContainer>

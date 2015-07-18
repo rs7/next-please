@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<s:SkinnableContainer
+    xmlns:fx="http://ns.adobe.com/mxml/2009"
+    xmlns:s="library://ns.adobe.com/flex/spark"
+    xmlns:view="rs7.nextPlease.view.*"
+>
+    <s:Label horizontalCenter="0" text="MainView" verticalCenter="0"/>
+    <view:ListView height="100" width="100%"/>
+</s:SkinnableContainer>
