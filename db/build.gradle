@@ -1,9 +1,45 @@
-task clean(type:Exec) {
-    commandLine 'mysql', '--user=root', '--password=mysql'
-    standardInput file('src/clean.sql').newInputStream()
+repositories {
+	mavenCentral()
 }
 
-task schema(type:Exec, dependsOn:clean) {
-    commandLine 'mysql', '--user=root', '--password=mysql'
-    standardInput file('src/schema.sql').newInputStream()
+configurations { 
+	driver
+}
+
+dependencies {
+	driver 'mysql:mysql-connector-java:5.1.36'
+}
+
+URLClassLoader loader = GroovyObject.class.classLoader
+configurations.driver.each { file -> loader.addURL(file.toURL()) }
+Class driverClass = loader.loadClass('com.mysql.jdbc.Driver')
+DriverManager.registerDriver(driverClass.newInstance())
+
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'org.springframework:spring-core:4.2.0.RELEASE'
+		classpath 'org.springframework:spring-jdbc:4.2.0.RELEASE'
+	}
+}
+
+import java.sql.DriverManager
+import org.springframework.core.io.FileSystemResource
+import org.springframework.jdbc.datasource.init.ScriptUtils
+
+def runSQLScript(filePath) {
+	ScriptUtils.executeSqlScript(
+		DriverManager.getConnection("jdbc:mysql://$project.ext.mysqlAddress", project.ext.mysqlUser, project.ext.mysqlPassword),
+		new FileSystemResource(filePath)
+	)
+}
+
+task clean << {
+	runSQLScript('src/clean.sql')
+}
+
+task schema << {
+	runSQLScript('src/schema.sql')
 }
