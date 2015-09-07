@@ -16,9 +16,10 @@ CREATE TABLE `relation` (
 );
 
 CREATE TABLE `transition` (
-	`id` TINYINT UNSIGNED NOT NULL KEY,
+	`id` TINYINT UNSIGNED NOT NULL AUTO_INCREMENT KEY,
 	`from_relation_id` TINYINT UNSIGNED NOT NULL,
 	`to_relation_id` TINYINT UNSIGNED NOT NULL,
+	UNIQUE (`from_relation_id`, `to_relation_id`),
 	FOREIGN KEY (`from_relation_id`) REFERENCES `relation` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (`to_relation_id`) REFERENCES `relation` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );

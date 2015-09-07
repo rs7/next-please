@@ -43,3 +43,7 @@ task clean << {
 task create << {
 	runSQLScript('src/schema.sql')
 }
+
+task test(dependsOn: create) << {
+	runSQLScript('src/test.sql')
+}
