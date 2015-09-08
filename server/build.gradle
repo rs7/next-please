@@ -3,7 +3,7 @@ buildscript {
 		mavenCentral()
 	}
 	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.5.RELEASE")
+		classpath name: 'spring-boot-gradle-plugin', version: '1.2.5.RELEASE', group: 'org.springframework.boot'
 	}
 }
 
@@ -14,5 +14,7 @@ repositories {
 }
 
 dependencies {
-	compile("org.springframework.boot:spring-boot-starter-web")
+	compile name: 'spring-boot-starter-web', version: '1.2.5.RELEASE', group: 'org.springframework.boot'
+	compile name: 'spring-boot-starter-data-jpa', version: '1.2.5.RELEASE', group: 'org.springframework.boot'
+	runtime name: 'mysql-connector-java', version: '5.1.36', group: 'mysql'
 }
