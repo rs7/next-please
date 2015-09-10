@@ -2,9 +2,10 @@ package np.entity;
 
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,11 +17,13 @@ public class Change {
 	@Id
 	private int id;
 
-	@Column(name = "transition_id", columnDefinition = "TINYINT")
-	private int transitionID;
+	@JoinColumn(name = "transition_id")
+	@ManyToOne
+	private Transition transition;
 
-	@Column(name = "user_id")
-	private int userID;
+	@JoinColumn(name = "user_id")
+	@ManyToOne
+	private User user;
 
 	public Date getDate() {
 		return date;
@@ -30,12 +33,12 @@ public class Change {
 		return id;
 	}
 
-	public int getTransitionID() {
-		return transitionID;
+	public Transition getTransition() {
+		return transition;
 	}
 
-	public int getUserID() {
-		return userID;
+	public User getUser() {
+		return user;
 	}
 
 }
