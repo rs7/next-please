@@ -6,24 +6,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import np.entity.User;
-import np.repository.UserRepository;
+import np.entity.Relation;
+import np.repository.RelationRepository;
 
-@RequestMapping(value="/user")
+@RequestMapping(value="/relation")
 @RestController
-public class UserController {
+public class RelationController {
 
 	@Autowired
-	private UserRepository users;
+	private RelationRepository relations;
 
 	@RequestMapping(method=RequestMethod.GET)
-	private Iterable<User> findAll() {
-		return users.findAll();
+	private Iterable<Relation> findAll() {
+		return relations.findAll();
 	}
 
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public User findByID(@PathVariable("id") Integer id) {
-		return users.findById(id).orElseThrow(() -> new EntityNotFoundException());
+	public Relation findByID(@PathVariable("id") Integer id) {
+		return relations.findById(id).orElseThrow(() -> new EntityNotFoundException());
 	}
 
 }

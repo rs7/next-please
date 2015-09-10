@@ -6,24 +6,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import np.entity.User;
-import np.repository.UserRepository;
+import np.entity.Transition;
+import np.repository.TransitionRepository;
 
-@RequestMapping(value="/user")
+@RequestMapping(value="/transition")
 @RestController
-public class UserController {
+public class TransitionController {
 
 	@Autowired
-	private UserRepository users;
+	private TransitionRepository transitions;
 
 	@RequestMapping(method=RequestMethod.GET)
-	private Iterable<User> findAll() {
-		return users.findAll();
+	private Iterable<Transition> findAll() {
+		return transitions.findAll();
 	}
 
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public User findByID(@PathVariable("id") Integer id) {
-		return users.findById(id).orElseThrow(() -> new EntityNotFoundException());
+	public Transition findByID(@PathVariable("id") Integer id) {
+		return transitions.findById(id).orElseThrow(() -> new EntityNotFoundException());
 	}
 
 }
