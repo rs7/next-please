@@ -17,7 +17,7 @@ public class ChangeController {
 	private ChangeRepository changes;
 
 	@RequestMapping(method=RequestMethod.GET)
-	private Iterable<Change> findAll() {
+	public Iterable<Change> findAll() {
 		return changes.findAll();
 	}
 
