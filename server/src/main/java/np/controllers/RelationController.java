@@ -23,7 +23,7 @@ public class RelationController {
 
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public Relation findByID(@PathVariable("id") Integer id) {
-		return relations.findById(id).orElseThrow(() -> new EntityNotFoundException());
+		return relations.findById(id).orElseThrow(EntityNotFoundException::new);
 	}
 
 }

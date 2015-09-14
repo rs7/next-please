@@ -23,7 +23,7 @@ public class UserController {
 
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public User findByID(@PathVariable("id") Integer id) {
-		return users.findById(id).orElseThrow(() -> new EntityNotFoundException());
+		return users.findById(id).orElseThrow(EntityNotFoundException::new);
 	}
 
 }

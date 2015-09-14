@@ -23,7 +23,7 @@ public class TransitionController {
 
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public Transition findByID(@PathVariable("id") Integer id) {
-		return transitions.findById(id).orElseThrow(() -> new EntityNotFoundException());
+		return transitions.findById(id).orElseThrow(EntityNotFoundException::new);
 	}
 
 }

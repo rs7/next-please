@@ -23,7 +23,7 @@ public class ChangeController {
 
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public Change findById(@PathVariable("id") Integer id) {
-		return changes.findById(id).orElseThrow(() -> new EntityNotFoundException());
+		return changes.findById(id).orElseThrow(EntityNotFoundException::new);
 	}
 
 }
