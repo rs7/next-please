@@ -4,21 +4,18 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 @Entity
 @Table(name = "relation")
-@XmlRootElement
+@XStreamAlias("relation")
 public class Relation {
 
 	@Id
 	@Column(columnDefinition = "TINYINT")
-	private int id;
-
-	@XmlAttribute
-	public int getId() {
-		return id;
-	}
+	@XStreamAsAttribute
+	public int id;
 
 }
