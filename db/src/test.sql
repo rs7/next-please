@@ -26,7 +26,7 @@ VALUES
 	(32, 3, 2)
 ;
 
-INSERT INTO `change` (`user_id`, `transition_id` , `date`)
+INSERT INTO `change` (`user_id`, `transition_id`, `date`)
 VALUES
 	(1001, 12, CURRENT_TIMESTAMP),
 	(1002, 32, CURRENT_TIMESTAMP - INTERVAL 2 HOUR),
