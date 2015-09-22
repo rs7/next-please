@@ -1,4 +1,5 @@
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 import org.apache.commons.io.FileUtils
@@ -31,7 +32,8 @@ configurations {
 }
 
 ext {
-    swfVersion = '16.0'
+    //Apache Flex SDK версии 4.14.1 компилируется в IDEA только с установленным swfVersion = '18.0' (https://youtrack.jetbrains.com/issue/IDEA-145396)
+    swfVersion = '18.0'
 }
 
 dependencies {
@@ -55,10 +57,6 @@ additionalCompilerOptions = [
   "-target-player=$swfVersion",
 ]
 
-task playerglobal
-
-compileFlex.dependsOn(playerglobal)
-
 /*
 Передача компилятору playerglobal.swc
 
@@ -66,15 +64,12 @@ compileFlex.dependsOn(playerglobal)
 Это сделано для возможности безболезненной смены swfVersion
 
 Как это работает:
-Достаём файл playerglobal.swc из разрешённых зависимостей типа playerglobal
-Помещает его в созданную для этого временную директорию (в стандартном для системы месте) по шаблону $tempDir/$swfVersion/playerglobal.swc
- Это соответствует шаблону ({playerglobalHome}/{targetPlayerMajorVersion}.{targetPlayerMinorVersion}/playerglobal.swc) заданному в стандартном конфигурационном файле компилятора (flex-config.xml) Flex SDK
-Ищем файл задания переменных окружения (env.properties) в директории Flex SDK. Если он есть, то переименовываем в env.properties.origin
-Заменяем файл env.properties новым содержимым env.PLAYERGLOBAL_HOME=$tempDir
- Это устанавливает значение токена {playerglobalHome} в конфигурационном файле
-Компилируем проект
-Восстанавливаем env.properties в оригинальное состояние из env.properties.origin
-Удаляем временную директорию
+
+1. Ищем файл задания переменных окружения (env.properties) в директории Flex SDK.
+2. Если он есть, считываем из него значение env.PLAYERGLOBAL_HOME
+   Если его нет, то создаём с содержимым env.PLAYERGLOBAL_HOME=libs/player
+3. Копируем файл playerglobal.swc из разрешённых зависимостей типа playerglobal в PLAYERGLOBAL_HOME/$swfVersion/playerglobal.swc
+   Это соответствует шаблону ({playerglobalHome}/{targetPlayerMajorVersion}.{targetPlayerMinorVersion}/playerglobal.swc) заданному в стандартном конфигурационном файле компилятора (flex-config.xml) Flex SDK
 
 Почему сделано именно так:
 - Имя файла playerglobal.swc нельзя менять, иначе компилятор его не подхватывает
@@ -82,33 +77,43 @@ compileFlex.dependsOn(playerglobal)
 - Задать переменную окружения из gradle нельзя (PLAYERGLOBAL_HOME не исключение)
 - Если не устанавливать переменную окружения PLAYERGLOBAL_HOME, компилятор не находит playerglobal.swc, даже если он расположен по стандартному пути libs/player (это касается Apache Flex SDK последних версий)
 */
-playerglobal << {
-    def playerglobalHome = Files.createTempDirectory('gradle-playerglobal.')
+task playerglobal << {
+
+    def envFile = Paths.get(flexSDKPath).resolve('env.properties')
+
+    Properties properties = new Properties()
+
+    if (Files.exists(envFile)) {
+        properties.load(Files.newInputStream(envFile))
+    } else {
+        envFile = Files.createFile(envFile)
+    }
+
+    def playerglobalHomeEnvKey = 'env.PLAYERGLOBAL_HOME'
+
+    def playerglobalHome = properties.getProperty(playerglobalHomeEnvKey)
+
+    if (!playerglobalHome) {
+
+        playerglobalHome = 'libs/player'
+        properties.setProperty(playerglobalHomeEnvKey, playerglobalHome)
+        properties.store(Files.newOutputStream(envFile), 'gradle')
+
+    }
+
+    Path playerglobalHomePath = Paths.get(playerglobalHome)
+    if (!playerglobalHomePath.isAbsolute()) {
+        playerglobalHomePath = Paths.get(flexSDKPath).resolve('frameworks').resolve(playerglobalHomePath)
+    }
+
+    Files.createDirectories(playerglobalHomePath)
 
     configurations.playerglobal.resolvedConfiguration.resolvedArtifacts.each { artifact ->
         project.copy {
             from artifact.file
-            into playerglobalHome.resolve(artifact.moduleVersion.id.version).toFile()
+            into playerglobalHomePath.resolve(artifact.moduleVersion.id.version).toFile()
             rename { String fileName -> fileName = 'playerglobal.swc' }
         }
     }
 
-    def envDir = Paths.get(flexSDKPath)
-
-    def envFileName = 'env.properties';
-    def envFile = envDir.resolve(envFileName)
-
-    if (Files.exists(envFile)) {
-        def envBakFileName = "${envFileName}.origin";
-        def envBakFile = envDir.resolve(envBakFileName)
-
-        Files.move(envFile, envBakFile, StandardCopyOption.REPLACE_EXISTING)
-
-        compileFlex.doLast {
-            Files.move(envBakFile, envFile, StandardCopyOption.REPLACE_EXISTING)
-            FileUtils.deleteDirectory(playerglobalHome.toFile())
-        }
-    }
-
-    envFile.text = "env.PLAYERGLOBAL_HOME=" + StringEscapeUtils.escapeJava(playerglobalHome.absolutePath)
 }
