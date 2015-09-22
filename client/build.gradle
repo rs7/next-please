@@ -47,7 +47,7 @@ output = 'next-please-gradle'
 playerVersion = swfVersion
 resourceDirs = []
 srcDirs = ['/src']
-testDirs = ['/test']
+testDirs = []
 testResourceDirs = []
 type = 'swf'
 
