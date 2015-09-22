@@ -40,6 +40,7 @@ dependencies {
 }
 
 flexHome = flexSDKPath
+flexSdkName = Paths.get(flexSDKPath).fileName
 frameworkLinkage = 'merged'
 mainClass = 'rs7.nextPlease.Main'
 output = 'next-please-gradle'
