@@ -29,7 +29,7 @@ configurations {
 }
 
 ext {
-    //Apache Flex SDK версии 4.14.1 компилируется в IDEA только с установленным swfVersion = '18.0' (https://youtrack.jetbrains.com/issue/IDEA-145396)
+    //После изменения версии может сломаться компиляция в IDEA. Удали/Добавь Apache Flex SDK в IDEA для решения проблемы.(https://youtrack.jetbrains.com/issue/IDEA-145396)
     swfVersion = '18.0'
 }
 
