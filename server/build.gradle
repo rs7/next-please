@@ -14,8 +14,10 @@ repositories {
 }
 
 dependencies {
+	compile name: 'flex-messaging-core', version: '4.7.1', group: 'org.apache.flex.blazeds'
 	compile name: 'spring-boot-starter-web', version: '1.2.5.RELEASE', group: 'org.springframework.boot'
 	compile name: 'spring-boot-starter-data-jpa', version: '1.2.5.RELEASE', group: 'org.springframework.boot'
+	compile name: 'spring-flex-core', version: '1.5.2.RELEASE', group: 'org.springframework.flex'
 	compile name: 'spring-oxm', version: '4.2.1.RELEASE', group: 'org.springframework'
 	runtime name: 'mysql-connector-java', version: '5.1.36', group: 'mysql'
 	compile name: 'xstream', version: '1.4.8', group: 'com.thoughtworks.xstream'
