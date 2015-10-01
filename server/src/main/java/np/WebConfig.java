@@ -47,7 +47,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 		xmlConverter.setMarshaller(xStreamMarshaller);
 		xmlConverter.setUnmarshaller(xStreamMarshaller);
- 
+
 		return xmlConverter;
 	}
 
