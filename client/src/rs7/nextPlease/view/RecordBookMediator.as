@@ -4,19 +4,19 @@ package rs7.nextPlease.view
     
     import robotlegs.bender.bundles.mvcs.Mediator;
     
-    import rs7.nextPlease.model.ListModel;
+    import rs7.nextPlease.model.Model;
     
-    public class ListMediator extends Mediator
+    public class RecordBookMediator extends Mediator
     {
         [Inject]
-        public var listModel:ListModel;
+        public var model:Model;
         
         [Inject]
-        public var view:ListView;
+        public var view:RecordBookView;
         
         override public function initialize():void
         {
-            BindingUtils.bindProperty(view, "dataProvider", listModel, "list");
+            BindingUtils.bindProperty(view, "dataProvider", model, "records");
         }
     }
 }

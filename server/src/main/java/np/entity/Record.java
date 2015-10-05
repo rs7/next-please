@@ -12,9 +12,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 @Entity
-@Table(name = "list")
-@XStreamAlias("list")
-public class List {
+@Table(name = "record")
+@XStreamAlias("record")
+public class Record {
 
 	public Date date;
 

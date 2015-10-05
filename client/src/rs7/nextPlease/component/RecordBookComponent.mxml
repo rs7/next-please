@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<s:SkinnableContainer
+    xmlns:fx="http://ns.adobe.com/mxml/2009"
+    xmlns:s="library://ns.adobe.com/flex/spark"
+>
+    <s:SkinnableDataContainer dataProvider="{dataProvider}" itemRenderer="rs7.nextPlease.component.RecordRenderer">
+        <s:layout>
+            <s:VerticalLayout/>
+        </s:layout>
+    </s:SkinnableDataContainer>
+    
+    <fx:Script>
+        <![CDATA[
+            import mx.collections.IList;
+            
+            [Bindable]
+            public var dataProvider:IList;
+        ]]>
+    </fx:Script>
+</s:SkinnableContainer>

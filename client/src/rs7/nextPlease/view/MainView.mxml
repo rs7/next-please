@@ -5,5 +5,5 @@
     xmlns:view="rs7.nextPlease.view.*"
 >
     <s:Label horizontalCenter="0" text="MainView" verticalCenter="0"/>
-    <view:ListView height="100" width="100%"/>
+    <view:RecordBookView height="100" width="100%"/>
 </s:SkinnableContainer>

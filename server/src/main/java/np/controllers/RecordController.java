@@ -6,24 +6,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import np.entity.List;
-import np.repository.ListRepository;
+import np.entity.Record;
+import np.repository.RecordRepository;
 
-@RequestMapping(value="/list")
+@RequestMapping(value="/record")
 @RestController
-public class ListController {
+public class RecordController {
 
 	@Autowired
-	private ListRepository list;
+	private RecordRepository records;
 
-	@RequestMapping(method= RequestMethod.GET)
-	public Iterable<List> findAll() {
-		return list.findAll();
+	@RequestMapping(method=RequestMethod.GET)
+	public Iterable<Record> findAll() {
+		return records.findAll();
 	}
 
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public List findById(@PathVariable("id") Integer id) {
-		return list.findById(id).orElseThrow(EntityNotFoundException::new);
+	public Record findById(@PathVariable("id") Integer id) {
+		return records.findById(id).orElseThrow(EntityNotFoundException::new);
 	}
 
 }

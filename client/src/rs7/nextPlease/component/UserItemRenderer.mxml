@@ -12,8 +12,8 @@
     
     <fx:Script>
         <![CDATA[
-            import rs7.nextPlease.model.User;
-            
+            import rs7.nextPlease.entity.User;
+
             [Bindable("dataChange")]
             public function get user():User
             {
