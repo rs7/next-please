@@ -7,6 +7,7 @@ package rs7.nextPlease.config
     import robotlegs.bender.framework.api.IConfig;
     import robotlegs.bender.framework.api.IInjector;
     
+    import rs7.nextPlease.command.SetHistoryCommand;
     import rs7.nextPlease.command.SetVKInfoUserCommand;
     import rs7.nextPlease.command.ShowMainCommand;
     import rs7.nextPlease.command.UpdateListCommand;
@@ -42,6 +43,7 @@ package rs7.nextPlease.config
         private function mapCommands():void
         {
             commandMap.map(Model.RECORDS_UPDATE_EVENT_TYPE).toCommand(SetVKInfoUserCommand);
+            commandMap.map(Model.RECORDS_UPDATE_EVENT_TYPE).toCommand(SetHistoryCommand);
         }
         
         private function mediators():void

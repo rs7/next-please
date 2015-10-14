@@ -8,11 +8,37 @@
         <s:VGroup>
             <s:Label text="{record.user.name}"/>
             <s:Label text="{dateTimeFormatter.format(record.date)}"/>
+            <s:DataGroup dataProvider="{record.user.changes}">
+                <s:layout>
+                    <s:VerticalLayout/>
+                </s:layout>
+                <s:itemRenderer>
+                    <fx:Component>
+                        <s:ItemRenderer>
+                            <fx:Script>
+                                    <![CDATA[
+                                        import rs7.nextPlease.entity.Change;
+                                        
+                                        [Bindable("dataChange")]
+                                        public function get change():Change
+                                        {
+                                            return Change(data);
+                                        }
+                                    ]]>
+                                </fx:Script>
+                            <s:HGroup>
+                                <s:Label text="{change.toRelation.titleKey}"/>
+                                <s:Label text="{outerDocument.dateTimeFormatter.format(change.date)}"/>
+                            </s:HGroup>
+                        </s:ItemRenderer>
+                    </fx:Component>
+                </s:itemRenderer>
+            </s:DataGroup>
         </s:VGroup>
     </s:HGroup>
     
     <fx:Declarations>
-        <s:DateTimeFormatter id="dateTimeFormatter" dateTimePattern="dd.MM.yyyy hh:mm:ss"/>
+        <s:DateTimeFormatter id="dateTimeFormatter" dateTimePattern="dd.MM.yyyy hh:mm"/>
     </fx:Declarations>
     
     <fx:Script>
