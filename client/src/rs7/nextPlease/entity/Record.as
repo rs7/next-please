@@ -6,6 +6,8 @@ package rs7.nextPlease.entity
     {
         public var date:Date;
         public var id:int;
+        public var reason:Reason;
+        public var recordBook:RecordBook;
         public var user:User;
     }
 }

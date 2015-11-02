@@ -22,6 +22,14 @@ public class Record {
 	@XStreamAsAttribute
 	public int id;
 
+	@JoinColumn(name = "reason_id")
+	@ManyToOne
+	public Reason reason;
+
+	@JoinColumn(name = "record_book_id")
+	@ManyToOne
+	public RecordBook recordBook;
+
 	@JoinColumn(name = "user_id")
 	@ManyToOne
 	public User user;

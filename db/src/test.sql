@@ -35,9 +35,20 @@ VALUES
 	(1004, 13, CURRENT_TIMESTAMP - INTERVAL 1 DAY)
 ;
 
-INSERT INTO `record` (`user_id`, `date`)
+INSERT INTO `record_book` (`id`)
 VALUES
-	(1001, CURRENT_TIMESTAMP),
-	(1002, CURRENT_TIMESTAMP - INTERVAL 1 HOUR),
-	(1003, CURRENT_TIMESTAMP - INTERVAL 5 HOUR)
+	(1)
+;
+
+INSERT INTO `reason` (`id`)
+VALUES
+	(1),
+	(2)
+;
+
+INSERT INTO `record` (`record_book_id`, `user_id`, `reason_id`, `date`)
+VALUES
+	(1, 1001, 1, CURRENT_TIMESTAMP),
+	(1, 1002, 2, CURRENT_TIMESTAMP - INTERVAL 1 HOUR),
+	(1, 1003, 1, CURRENT_TIMESTAMP - INTERVAL 5 HOUR)
 ;

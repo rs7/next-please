@@ -29,7 +29,7 @@ package rs7.nextPlease.command
         {
             context.detain(this);
             
-            var request:URLRequest = new URLRequest("http://localhost:8090/record.amf");
+            var request:URLRequest = new URLRequest("http://localhost:8090/record-book/1/records.amf");
             var loader:URLLoader = new URLLoader();
             loader.addEventListener(Event.COMPLETE, loader_completeHandler);
             loader.dataFormat = URLLoaderDataFormat.BINARY;
