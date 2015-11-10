@@ -11,6 +11,11 @@ apply plugin: 'spring-boot'
 
 repositories {
 	mavenCentral()
+
+	//blazeds-*:4.0.0.14931 <- spring-flex-core:1.5.2.RELEASE
+	maven {
+		url "http://repo.spring.io/ext-release-local"
+	}
 }
 
 dependencies {
