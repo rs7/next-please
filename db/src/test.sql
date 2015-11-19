@@ -22,7 +22,7 @@ VALUES
 	(7, 'relation.влюблён')
 ;
 
-INSERT INTO `change` (`user_id`, `to_relation_id`, `date`)
+INSERT INTO `change` (`user_id`, `relation_id`, `date`)
 VALUES
 	(209991765, 3, CURRENT_TIMESTAMP),
 	(209991765, 2, CURRENT_TIMESTAMP - INTERVAL 2 HOUR),

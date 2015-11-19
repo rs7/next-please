@@ -22,9 +22,9 @@ public class Change {
 	@XStreamAsAttribute
 	public int id;
 
-	@JoinColumn(name = "to_relation_id")
+	@JoinColumn(name = "relation_id")
 	@ManyToOne
-	public Relation toRelation;
+	public Relation relation;
 
 	@JoinColumn(name = "user_id")
 	@ManyToOne

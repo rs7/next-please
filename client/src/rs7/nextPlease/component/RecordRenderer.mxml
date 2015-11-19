@@ -27,7 +27,7 @@
                                     ]]>
                                 </fx:Script>
                             <s:HGroup>
-                                <s:Label text="{change.toRelation.titleKey}"/>
+                                <s:Label text="{change.relation.titleKey}"/>
                                 <s:Label text="{outerDocument.dateTimeFormatter.format(change.date)}"/>
                             </s:HGroup>
                         </s:ItemRenderer>
