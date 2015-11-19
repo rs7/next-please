@@ -5,10 +5,8 @@ package rs7.nextPlease.command
     import flash.net.URLLoaderDataFormat;
     import flash.net.URLRequest;
     import flash.utils.ByteArray;
-    import flash.utils.Dictionary;
     
     import mx.collections.ArrayCollection;
-    
     import mx.utils.StringUtil;
     
     import robotlegs.bender.bundles.mvcs.Command;
@@ -16,7 +14,6 @@ package rs7.nextPlease.command
     
     import rs7.nextPlease.entity.Record;
     import rs7.nextPlease.entity.User;
-    
     import rs7.nextPlease.model.Model;
     
     public class SetHistoryCommand extends Command
@@ -24,12 +21,12 @@ package rs7.nextPlease.command
         [Inject]
         public var context:IContext;
         
+        private var inProgress:int;
+        
         [Inject]
         public var model:Model;
         
-        private var inProgress:int;
-        
-        override public function execute() : void
+        override public function execute():void
         {
             context.detain(this);
             
@@ -41,9 +38,18 @@ package rs7.nextPlease.command
             }
         }
         
+        private function release():void
+        {
+            context.release(this);
+        }
+        
         private function updateOne(user:User):void
         {
-            var request:URLRequest = new URLRequest(StringUtil.substitute("http://localhost:8090/user/{0}/changes.amf", user.id));
+            var request:URLRequest = new URLRequest(
+                StringUtil.substitute(
+                    "http://localhost:8090/user/{0}/changes.amf", user.id
+                )
+            );
             var loader:URLLoader = new URLLoader();
             loader.addEventListener(Event.COMPLETE, loader_completeHandler);
             loader.dataFormat = URLLoaderDataFormat.BINARY;
@@ -59,11 +65,6 @@ package rs7.nextPlease.command
                     release();
                 }
             }
-        }
-        
-        private function release():void
-        {
-            context.release(this);
         }
     }
 }

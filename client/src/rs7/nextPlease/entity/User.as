@@ -6,8 +6,8 @@ package rs7.nextPlease.entity
     [RemoteClass(alias="np.entity.User")]
     public class User
     {
-        public var id:int;
         public var changes:ArrayCollection;
+        public var id:int;
         public var name:String;
         public var photoURL:String;
     }

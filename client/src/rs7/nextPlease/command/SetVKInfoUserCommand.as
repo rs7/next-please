@@ -28,7 +28,11 @@ package rs7.nextPlease.command
                 userIDs.push(record.user.id);
             }
             
-            var request:URLRequest = new URLRequest("http://api.vk.com/method/users.get.xml?user_ids=" + userIDs.join(",") + "&fields=photo_100");
+            var request:URLRequest = new URLRequest(
+                "http://api.vk.com/method/users.get.xml?user_ids=" +
+                userIDs.join(",") + 
+                "&fields=photo_100"
+            );
             var loader:URLLoader = new URLLoader();
             loader.addEventListener(Event.COMPLETE, loader_completeHandler);
             loader.load(request);
