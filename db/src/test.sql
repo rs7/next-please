@@ -14,14 +14,14 @@ VALUES
 
 INSERT INTO `relation` (`id`, `title_key`)
 VALUES
-	(0, 'relation.не_указано'),
-	(1, 'relation.женат'),
-	(2, 'relation.есть_подруга'),
-	(3, 'relation.помолвлен'),
-	(4, 'relation.женат'),
-	(5, 'relation.всё_сложно'),
-	(6, 'relation.в_активном_поиске'),
-	(7, 'relation.влюблён')
+	(0, 'relation.none_selected'),
+	(1, 'relation.single'),
+	(2, 'relation.in_a_relationship'),
+	(3, 'relation.engaged'),
+	(4, 'relation.married'),
+	(5, 'relation.it_is_complicated'),
+	(6, 'relation.actively_searching'),
+	(7, 'relation.in_love')
 ;
 
 INSERT INTO `change` (`user_id`, `relation_id`, `date`)
