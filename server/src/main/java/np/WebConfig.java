@@ -6,6 +6,9 @@ import com.thoughtworks.xstream.XStream;
 
 import flex.messaging.io.MessageIOConstants;
 
+import np.web.filter.XHttpMethodOverrideFilter;
+
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.flex.http.AmfHttpMessageConverter;
 import org.springframework.http.MediaType;
@@ -15,6 +18,8 @@ import org.springframework.http.converter.xml.MarshallingHttpMessageConverter;
 import org.springframework.oxm.xstream.XStreamMarshaller;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import javax.servlet.Filter;
 
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
@@ -51,4 +56,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		return xmlConverter;
 	}
 
+	@Bean
+	public Filter xHttpMethodOverrideFilter() {
+		return new XHttpMethodOverrideFilter();
+	}
 }
