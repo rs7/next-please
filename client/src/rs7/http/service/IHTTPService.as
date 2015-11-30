@@ -4,6 +4,6 @@ package rs7.http.service
     
     public interface IHTTPService
     {
-        function execute(request:IHTTPRequest)
+        function execute(request:IHTTPRequest):void;
     }
 }
