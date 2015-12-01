@@ -1,6 +1,6 @@
 package rs7.http
 {
-    import rs7.lang.Enum;
+    import rs7.lang.enum.Enum;
     
     public class HTTPMethod extends Enum
     {
@@ -9,16 +9,17 @@ package rs7.http
         public static const POST:HTTPMethod = new HTTPMethod("POST");
         public static const PUT:HTTPMethod = new HTTPMethod("PUT");
         
-        public function HTTPMethod(value:String)
+        public function HTTPMethod(name:String)
         {
-            _value = value;
+            super(name);
+            _name = name;
         }
         
-        private var _value:String;
+        private var _name:String;
         
-        public function get value():String
+        public function get name():String
         {
-            return _value;
+            return _name;
         }
     }
 }

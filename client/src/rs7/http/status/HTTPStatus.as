@@ -1,6 +1,6 @@
-package rs7.http
+package rs7.http.status
 {
-    import rs7.lang.Enum;
+    import rs7.lang.enum.Enum;
     
     public class HTTPStatus extends Enum
     {
@@ -15,7 +15,7 @@ package rs7.http
         public static const PROCESSING:HTTPStatus = new HTTPStatus(102, "Processing");
         
         public static const CHECKPOINT:HTTPStatus = new HTTPStatus(103, "Checkpoint");
-    
+        
         //--------------------------------
         // 2xx Success
         //--------------------------------
@@ -134,7 +134,7 @@ package rs7.http
         public static const TOO_MANY_REQUESTS:HTTPStatus = new HTTPStatus(429, "Too Many Requests");
         
         public static const REQUEST_HEADER_FIELDS_TOO_LARGE:HTTPStatus = new HTTPStatus(431, "Request Header Fields Too Large");
-    
+        
         //--------------------------------
         // 5xx Server Error
         //--------------------------------
@@ -162,111 +162,27 @@ package rs7.http
         public static const NOT_EXTENDED:HTTPStatus = new HTTPStatus(510, "Not Extended");
         
         public static const NETWORK_AUTHENTICATION_REQUIRED:HTTPStatus = new HTTPStatus(511, "Network Authentication Required");
-    
+        
         //--------------------------------
         
-        public function HTTPStatus(value:int, reasonPhrase:String)
+        public function HTTPStatus(code:int, reasonPhrase:String)
         {
-            _value = value;
+            super(code);
+            _code = code;
             _reasonPhrase = reasonPhrase;
         }
         
+        private var _code:int;
         private var _reasonPhrase:String;
-        private var _value:int;
+        
+        public function get code():int
+        {
+            return _code;
+        }
         
         public function get reasonPhrase():String
         {
             return _reasonPhrase;
         }
-        
-        public function get value():int
-        {
-            return _value;
-        }
-        
-        public function is1xxInformational():Boolean
-        {
-            return (Series.INFORMATIONAL == series());
-        }
-        
-        public function is2xxSuccessful():Boolean
-        {
-            return (Series.SUCCESSFUL == series());
-        }
-        
-        public function is3xxRedirection():Boolean
-        {
-            return (Series.REDIRECTION == series());
-        }
-        
-        public function is4xxClientError():Boolean
-        {
-            return (Series.CLIENT_ERROR == series());
-        }
-        
-        public function is5xxServerError():Boolean
-        {
-            return (Series.SERVER_ERROR == series());
-        }
-        
-        public function series():Series
-        {
-            return Series.valueOfStatus(this);
-        }
-    }
-}
-
-import rs7.http.HTTPStatus;
-import rs7.lang.Enum;
-
-internal class Series extends Enum
-{
-    public static const INFORMATIONAL:Series = new Series(1);
-    public static const SUCCESSFUL:Series = new Series(2);
-    public static const REDIRECTION:Series = new Series(3);
-    public static const CLIENT_ERROR:Series = new Series(4);
-    public static const SERVER_ERROR:Series = new Series(5);
-    
-    public static function valueStatusCode(statusCode:int):Series
-    {
-        var seriesCode:int = statusCode / 100;
-        
-        for each(var series:Series in values())
-        {
-            if (series.value == seriesCode)
-            {
-                return series;
-            }
-        }
-        
-        throw new ArgumentError("No matching constant for [" + statusCode + "]");
-    }
-    
-    public static function valueOfStatus(status:HTTPStatus):Series
-    {
-        return valueStatusCode(status.value);
-    }
-    
-    public static function values():Array
-    {
-        return [
-            INFORMATIONAL,
-            SUCCESSFUL,
-            REDIRECTION,
-            CLIENT_ERROR,
-            SERVER_ERROR
-        ];
-    }
-    
-    public function Series(value:int)
-    {
-        _value = value;
-    }
-    
-    private var _value:int;
-    
-    public function get value():int
-    {
-        return _value;
     }
 }
