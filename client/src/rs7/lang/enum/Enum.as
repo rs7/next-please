@@ -4,14 +4,14 @@ package rs7.lang.enum
     {
         public function Enum(value:*)
         {
-            _value = value;
+            _key = EnumKeyCreator.createKey(value);
         }
         
-        private var _value:*;
+        private var _key:*;
         
-        enum_internal function get value():*
+        enum_internal function get key():*
         {
-            return _value;
+            return _key;
         }
     }
 }

@@ -36,12 +36,12 @@ package rs7.lang.enum
                 {
                     var enumItem:Enum = staticProperty.getValue(null);
                     
-                    if (enumValueMap[enumItem.value])
+                    if (enumValueMap[enumItem.key])
                     {
-                        throw new Error("Duplicate enum value");
+                        throw new Error("Duplicate enum key");
                     }
                     
-                    enumValueMap[enumItem.value] = enumItem;
+                    enumValueMap[enumItem.key] = enumItem;
                 }
             }
             
