@@ -8,7 +8,22 @@ package rs7.util.mediaType.mimeType
         
         public function MimeType(basicType:MimeTypeBasicType, subType:MimeTypeSubType)
         {
-            super(null);//TODO
+            super(basicType, subType);
+            _basicType = basicType;
+            _subType = subType;
+        }
+        
+        private var _basicType:MimeTypeBasicType;
+        private var _subType:MimeTypeSubType;
+        
+        public function get basicType():MimeTypeBasicType
+        {
+            return _basicType;
+        }
+        
+        public function get subType():MimeTypeSubType
+        {
+            return _subType;
         }
     }
 }

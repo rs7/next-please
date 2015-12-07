@@ -2,9 +2,9 @@ package rs7.lang.enum
 {
     public class Enum
     {
-        public function Enum(value:*)
+        public function Enum(...keys)
         {
-            _key = EnumKeyCreator.createKey(value);
+            _key = EnumKeyCreator.createKey.apply(null, keys);
         }
         
         private var _key:*;
