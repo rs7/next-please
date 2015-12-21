@@ -1,14 +1,17 @@
 package rs7.http
 {
     import rs7.http.header.HTTPHeaders;
+    import rs7.http.header.IHTTPHeaders;
+    
+    use namespace http_internal;
     
     public class HTTPMessage implements IHTTPMessage
     {
-        private var _headers:HTTPHeaders = new HTTPHeaders();
+        http_internal var headers:HTTPHeaders = new HTTPHeaders();
         
-        public function get headers():HTTPHeaders
+        public function get headers():IHTTPHeaders
         {
-            return _headers;
+            return http_internal::headers;
         }
     }
 }

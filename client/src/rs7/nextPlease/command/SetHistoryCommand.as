@@ -1,17 +1,17 @@
 package rs7.nextPlease.command
 {
-    import flash.events.Event;
-    import flash.net.URLLoader;
-    import flash.net.URLLoaderDataFormat;
-    import flash.net.URLRequest;
-    import flash.utils.ByteArray;
-    
     import mx.collections.ArrayCollection;
     import mx.utils.StringUtil;
     
     import robotlegs.bender.bundles.mvcs.Command;
     import robotlegs.bender.framework.api.IContext;
     
+    import rs7.http.HTTPMethod;
+    import rs7.http.HTTPRequestCreator;
+    import rs7.http.IHTTPRequest;
+    import rs7.http.loader.HTTPLoader;
+    import rs7.http.loader.IHTTPLoader;
+    import rs7.http.promise.IHTTPPromise;
     import rs7.nextPlease.entity.Record;
     import rs7.nextPlease.entity.User;
     import rs7.nextPlease.model.Model;
@@ -22,7 +22,9 @@ package rs7.nextPlease.command
         public var context:IContext;
         
         private var inProgress:int;
-        
+    
+        private var requestCreator:HTTPRequestCreator = new HTTPRequestCreator();
+    
         [Inject]
         public var model:Model;
         
@@ -45,20 +47,20 @@ package rs7.nextPlease.command
         
         private function updateOne(user:User):void
         {
-            var request:URLRequest = new URLRequest(
-                StringUtil.substitute(
-                    "http://localhost:8090/user/{0}/changes.amf", user.id
-                )
+            var request:IHTTPRequest = requestCreator.create(
+                HTTPMethod.GET,
+                StringUtil.substitute("http://localhost:8090/user/{0}/changes.amf", user.id)
             );
-            var loader:URLLoader = new URLLoader();
-            loader.addEventListener(Event.COMPLETE, loader_completeHandler);
-            loader.dataFormat = URLLoaderDataFormat.BINARY;
-            loader.load(request);
             
-            function loader_completeHandler(event:Event):void
+            var loader:IHTTPLoader = new HTTPLoader();
+            
+            var promise:IHTTPPromise = loader.load(request);
+            
+            promise.success.addOnce(onSuccess);
+            
+            function onSuccess():void
             {
-                var loader:URLLoader = URLLoader(event.currentTarget);
-                var changes:ArrayCollection = ArrayCollection(ByteArray(loader.data).readObject());
+                var changes:ArrayCollection = ArrayCollection(promise.response.body.readObject());
                 user.changes = changes;
                 if (inProgress == 0)
                 {
