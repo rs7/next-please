@@ -1,17 +1,14 @@
 package rs7.lang.enum
 {
+    use namespace enum_internal;
+    
     public class Enum
     {
-        public function Enum(...keys)
+        public function Enum(...keyParts)
         {
-            _key = EnumKeyCreator.createKey.apply(null, keys);
+            key = EnumKeyCreator.instance.createKey.apply(null, keyParts);
         }
         
-        private var _key:*;
-        
-        enum_internal function get key():*
-        {
-            return _key;
-        }
+        enum_internal var key:EnumKey;
     }
 }

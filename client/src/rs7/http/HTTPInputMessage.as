@@ -7,7 +7,7 @@ package rs7.http
     
     public class HTTPInputMessage extends HTTPMessage implements IHTTPInputMessage
     {
-        http_internal var body:ByteArray = new ByteArray();
+        http_internal var body:IDataInput = new ByteArray();
         
         public function get body():IDataInput
         {

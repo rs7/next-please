@@ -13,14 +13,17 @@ package rs7.http.loader
     import flash.utils.ByteArray;
     
     import rs7.http.HTTPMethod;
-    import rs7.http.HTTPResponseCreator;
+    import rs7.http.HTTPResponse;
     import rs7.http.IHTTPRequest;
     import rs7.http.header.HTTPHeader;
+    import rs7.http.header.HTTPHeaders;
     import rs7.http.header.HTTPHeadersNames;
     import rs7.http.header.IHTTPHeader;
     import rs7.http.http_internal;
     import rs7.http.promise.HTTPPromise;
     import rs7.http.promise.IHTTPPromise;
+    import rs7.http.status.HTTPStatus;
+    import rs7.lang.enum.EnumMapper;
     
     use namespace http_internal;
     
@@ -29,13 +32,13 @@ package rs7.http.loader
         private var _loader:URLLoader;
         private var _promise:HTTPPromise;
         private var _request:URLRequest;
+        private var _response:HTTPResponse;
         
         private function cleanupListeners():void
         {
             _loader.removeEventListener(Event.COMPLETE, loader_completeHandler);
             _loader.removeEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
             _loader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
-            _loader.removeEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS, loader_httpResponseStatusHandler);
             _loader.removeEventListener(HTTPStatusEvent.HTTP_STATUS, loader_httpStatusHandler);
         }
         
@@ -96,24 +99,21 @@ package rs7.http.loader
                 return _promise;
             }
             
+            _response = new HTTPResponse();
+            
+            _promise.http_internal::response = _response;
+            
             _loader.addEventListener(Event.COMPLETE, loader_completeHandler);
             _loader.addEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
             _loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
-            _loader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS, loader_httpResponseStatusHandler);
             _loader.addEventListener(HTTPStatusEvent.HTTP_STATUS, loader_httpStatusHandler);
             
             return _promise;
         }
         
-        private function populateResponse():void
-        {
-            var responseCreator:HTTPResponseCreator = new HTTPResponseCreator();
-            _promise.response = responseCreator.create(ByteArray(_loader.data));
-        }
-        
         private function success():void
         {
-            populateResponse();
+            _response.http_internal::body = ByteArray(_loader.data);
             _promise.success.dispatch();
         }
         
@@ -129,24 +129,26 @@ package rs7.http.loader
             fail();
         }
         
-        private function loader_httpResponseStatusHandler(event:HTTPStatusEvent):void
-        {
-            loader_statusHandler(event);
-        }
-        
         private function loader_httpStatusHandler(event:HTTPStatusEvent):void
         {
-            loader_statusHandler(event);
+            _response.http_internal::status = HTTPStatus(EnumMapper.instance.getEnum(HTTPStatus, event.status));
+            
+            /*var headers:Array = event.responseHeaders.filter(
+                function convertHeader(urlRequestHeader:URLRequestHeader, ..._):IHTTPHeader
+                {
+                    var httpHeader:HTTPHeader = new HTTPHeader();
+                    httpHeader.name = urlRequestHeader.name;
+                    httpHeader.value = urlRequestHeader.value;
+                    return httpHeader;
+                }
+            );*/
+            
+            _response.http_internal::headers = new HTTPHeaders();
         }
         
         private function loader_ioErrorHandler(event:IOErrorEvent):void
         {
             loader_errorHandler(event);
-        }
-        
-        private function loader_statusHandler(event:HTTPStatusEvent):void
-        {
-            
         }
         
         private function loader_securityErrorHandler(event:SecurityErrorEvent):void

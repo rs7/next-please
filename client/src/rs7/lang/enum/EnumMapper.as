@@ -11,19 +11,19 @@ package rs7.lang.enum
     {
         public static const instance:EnumMapper = new EnumMapper();
         
-        private var enumMap:Dictionary = new Dictionary();
+        private var enumClassMap:Dictionary = new Dictionary();
         
         public function getEnum(enumClass:Class, enumValue:*):Enum
         {
-            if (!enumMap[enumClass])
+            if (!enumClassMap[enumClass])
             {
-                initializeEnumMap(enumClass);
+                initializeEnumClass(enumClass);
             }
             
-            return enumMap[enumClass][enumValue] as Enum;
+            return enumClassMap[enumClass][enumValue] as Enum;
         }
         
-        private function initializeEnumMap(enumClass:Class):void
+        public function initializeEnumClass(enumClass:Class):void
         {
             var classInfo:ClassInfo = ClassInfo.forClass(enumClass);
             var staticProperties:Array = classInfo.getStaticProperties();
@@ -36,16 +36,19 @@ package rs7.lang.enum
                 {
                     var enumItem:Enum = staticProperty.getValue(null);
                     
-                    if (enumValueMap[enumItem.key])
+                    var enumKey:EnumKey = enumItem.key;
+                    var enumStringKey:String = enumKey.stringKey;
+                    
+                    if (enumValueMap[enumStringKey])
                     {
                         throw new Error("Duplicate enum key");
                     }
                     
-                    enumValueMap[enumItem.key] = enumItem;
+                    enumValueMap[enumStringKey] = enumItem;
                 }
             }
             
-            enumMap[enumClass] = enumValueMap;
+            enumClassMap[enumClass] = enumValueMap;
         }
     }
 }

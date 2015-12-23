@@ -1,15 +1,9 @@
 package rs7.lang.enum
 {
+    use namespace enum_internal;
+    
     internal class EnumKey
     {
-        public function EnumKey(...keys)
-        {
-            
-        }
-        
-        internal function enumValue():*
-        {
-            
-        }
+        enum_internal var stringKey:*;
     }
 }

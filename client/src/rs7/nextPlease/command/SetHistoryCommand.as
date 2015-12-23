@@ -7,9 +7,8 @@ package rs7.nextPlease.command
     import robotlegs.bender.framework.api.IContext;
     
     import rs7.http.HTTPMethod;
-    import rs7.http.HTTPRequestCreator;
     import rs7.http.IHTTPRequest;
-    import rs7.http.loader.HTTPLoader;
+    import rs7.http.IHTTPRequestCreator;
     import rs7.http.loader.IHTTPLoader;
     import rs7.http.promise.IHTTPPromise;
     import rs7.nextPlease.entity.Record;
@@ -22,11 +21,12 @@ package rs7.nextPlease.command
         public var context:IContext;
         
         private var inProgress:int;
-    
-        private var requestCreator:HTTPRequestCreator = new HTTPRequestCreator();
-    
+        
         [Inject]
         public var model:Model;
+        
+        [Inject]
+        public var requestCreator:IHTTPRequestCreator;
         
         override public function execute():void
         {
@@ -52,7 +52,7 @@ package rs7.nextPlease.command
                 StringUtil.substitute("http://localhost:8090/user/{0}/changes.amf", user.id)
             );
             
-            var loader:IHTTPLoader = new HTTPLoader();
+            var loader:IHTTPLoader = context.injector.getInstance(IHTTPLoader);
             
             var promise:IHTTPPromise = loader.load(request);
             

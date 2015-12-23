@@ -2,7 +2,6 @@ package rs7.http.promise
 {
     import org.osflash.signals.Promise;
     
-    import rs7.http.HTTPResponse;
     import rs7.http.IHTTPResponse;
     import rs7.http.http_internal;
     
@@ -11,8 +10,8 @@ package rs7.http.promise
     public class HTTPPromise implements IHTTPPromise
     {
         private var _fail:Promise = new Promise();
-        http_internal var response:IHTTPResponse = new HTTPResponse();
         private var _success:Promise = new Promise();
+        http_internal var response:IHTTPResponse;
         
         public function get fail():Promise
         {

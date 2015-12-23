@@ -7,7 +7,7 @@ package rs7.http
     
     public class HTTPMessage implements IHTTPMessage
     {
-        http_internal var headers:HTTPHeaders = new HTTPHeaders();
+        http_internal var headers:HTTPHeaders;
         
         public function get headers():IHTTPHeaders
         {

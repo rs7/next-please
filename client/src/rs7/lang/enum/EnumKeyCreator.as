@@ -1,40 +1,57 @@
 package rs7.lang.enum
 {
-    import rs7.util.mediaType.hash.HashUtil;
+    use namespace enum_internal;
     
-    public class EnumKeyCreator
+    internal class EnumKeyCreator
     {
-        public static function createKey(...objects):*
+        public static const instance:EnumKeyCreator = new EnumKeyCreator();
+        
+        public function createKey(...source):EnumKey
         {
-            switch (objects.length)
+            var key:EnumKey = new EnumKey();
+            
+            switch (source.length)
             {
-                case 0: return null;
-                case 1: return createSingleKey(objects[0]);
-                default: return createMultiKey(objects);
+                case 0:
+                    key.stringKey = null;
+                    break;
+                case 1:
+                    key.stringKey = createSingleKey(source[0]);
+                    break;
+                default:
+                    key.stringKey = createMultiKey(source);
+                    break;
             }
+            
+            return key;
         }
         
-        private static function createSingleKey(object:*):*
+        private function createMultiKey(source:Array):String
+        {
+            return source.filter(
+                function (sourceItem:*, ..._) : String
+                {
+                    return createSingleKey(sourceItem);
+                }
+            ).join(",");
+        }
+        
+        private function createSingleKey(source:*):String
         {
             switch (true)
             {
-                case object is Number:
-                case object is Boolean:
-                case object is String:
-                    return object;
+                case source is String:
+                    return source;
+                case source is Number:
+                case source is Boolean:
+                    return String(source);
+                case source is Enum:
+                    return Enum(source).key.stringKey;
+                case source is Object:
+                    return Object(source).toString();
                 default:
-                    return createHashKey(object);
+                    throw new Error("Invalid type of part of enum key");
             }
-        }
-        
-        private static function createMultiKey(objects:Array):*
-        {
-            return HashUtil.md5(objects);
-        }
-        
-        private static function createHashKey(object:*):*
-        {
-            return HashUtil.md5(object);
         }
     }
 }

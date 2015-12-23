@@ -50,15 +50,15 @@ package rs7.http.status
         
         public static const FOUND:HTTPStatus = new HTTPStatus(302, "Found");
         
-        [Deprecated]
-        public static const MOVED_TEMPORARILY:HTTPStatus = new HTTPStatus(302, "Moved Temporarily");
+        //[Deprecated]
+        //public static const MOVED_TEMPORARILY:HTTPStatus = new HTTPStatus(302, "Moved Temporarily");
         
         public static const SEE_OTHER:HTTPStatus = new HTTPStatus(303, "See Other");
         
         public static const NOT_MODIFIED:HTTPStatus = new HTTPStatus(304, "Not Modified");
         
-        [Deprecated]
-        public static const USE_PROXY:HTTPStatus = new HTTPStatus(305, "Use Proxy");
+        //[Deprecated]
+        //public static const USE_PROXY:HTTPStatus = new HTTPStatus(305, "Use Proxy");
         
         public static const TEMPORARY_REDIRECT:HTTPStatus = new HTTPStatus(307, "Temporary Redirect");
         
@@ -96,13 +96,13 @@ package rs7.http.status
         
         public static const PAYLOAD_TOO_LARGE:HTTPStatus = new HTTPStatus(413, "Payload Too Large");
         
-        [Deprecated]
-        public static const REQUEST_ENTITY_TOO_LARGE:HTTPStatus = new HTTPStatus(413, "Request Entity Too Large");
+        //[Deprecated]
+        //public static const REQUEST_ENTITY_TOO_LARGE:HTTPStatus = new HTTPStatus(413, "Request Entity Too Large");
         
         public static const URI_TOO_LONG:HTTPStatus = new HTTPStatus(414, "URI Too Long");
         
-        [Deprecated]
-        public static const REQUEST_URI_TOO_LONG:HTTPStatus = new HTTPStatus(414, "Request-URI Too Long");
+        //[Deprecated]
+        //public static const REQUEST_URI_TOO_LONG:HTTPStatus = new HTTPStatus(414, "Request-URI Too Long");
         
         public static const UNSUPPORTED_MEDIA_TYPE:HTTPStatus = new HTTPStatus(415, "Unsupported Media Type");
         
@@ -112,14 +112,14 @@ package rs7.http.status
         
         public static const I_AM_A_TEAPOT:HTTPStatus = new HTTPStatus(418, "I'm a teapot");
         
-        [Deprecated]
-        public static const INSUFFICIENT_SPACE_ON_RESOURCE:HTTPStatus = new HTTPStatus(419, "Insufficient Space On Resource");
+        //[Deprecated]
+        //public static const INSUFFICIENT_SPACE_ON_RESOURCE:HTTPStatus = new HTTPStatus(419, "Insufficient Space On Resource");
         
-        [Deprecated]
-        public static const METHOD_FAILURE:HTTPStatus = new HTTPStatus(420, "Method Failure");
+        //[Deprecated]
+        //public static const METHOD_FAILURE:HTTPStatus = new HTTPStatus(420, "Method Failure");
         
-        [Deprecated]
-        public static const DESTINATION_LOCKED:HTTPStatus = new HTTPStatus(421, "Destination Locked");
+        //[Deprecated]
+        //public static const DESTINATION_LOCKED:HTTPStatus = new HTTPStatus(421, "Destination Locked");
         
         public static const UNPROCESSABLE_ENTITY:HTTPStatus = new HTTPStatus(422, "Unprocessable Entity");
         

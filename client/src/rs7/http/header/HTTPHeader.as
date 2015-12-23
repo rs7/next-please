@@ -1,24 +1,28 @@
 package rs7.http.header
 {
+    import rs7.http.http_internal;
+    
+    use namespace http_internal;
+    
     public class HTTPHeader implements IHTTPHeader
     {
-        public function HTTPHeader(name:String, value:String)
+        public function HTTPHeader(name:String = null, value:String = null)
         {
-            _name = name;
-            _value = value;
+            http_internal::name = name;
+            http_internal::value = value;
         }
         
-        private var _name:String;
-        private var _value:String;
+        http_internal var name:String;
+        http_internal var value:String;
         
         public function get name():String
         {
-            return _name;
+            return http_internal::name;
         }
         
         public function get value():String
         {
-            return _value;
+            return http_internal::value;
         }
     }
 }
