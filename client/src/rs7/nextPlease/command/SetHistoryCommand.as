@@ -6,11 +6,13 @@ package rs7.nextPlease.command
     import robotlegs.bender.bundles.mvcs.Command;
     import robotlegs.bender.framework.api.IContext;
     
-    import rs7.http.HTTPMethod;
-    import rs7.http.IHTTPRequest;
-    import rs7.http.IHTTPRequestCreator;
     import rs7.http.loader.IHTTPLoader;
+    import rs7.http.loader.IHTTPLoaderCreator;
+    import rs7.http.method.HTTPMethod;
     import rs7.http.promise.IHTTPPromise;
+    import rs7.http.request.IHTTPRequest;
+    import rs7.http.request.IHTTPRequestCreator;
+    import rs7.http.uri.URI;
     import rs7.nextPlease.entity.Record;
     import rs7.nextPlease.entity.User;
     import rs7.nextPlease.model.Model;
@@ -21,6 +23,9 @@ package rs7.nextPlease.command
         public var context:IContext;
         
         private var inProgress:int;
+        
+        [Inject]
+        public var loaderCreator:IHTTPLoaderCreator;
         
         [Inject]
         public var model:Model;
@@ -47,12 +52,12 @@ package rs7.nextPlease.command
         
         private function updateOne(user:User):void
         {
-            var request:IHTTPRequest = requestCreator.create(
-                HTTPMethod.GET,
-                StringUtil.substitute("http://localhost:8090/user/{0}/changes.amf", user.id)
-            );
+            var request:IHTTPRequest = requestCreator.create();
             
-            var loader:IHTTPLoader = context.injector.getInstance(IHTTPLoader);
+            request.method = HTTPMethod.GET;
+            request.uri = new URI(StringUtil.substitute("http://localhost:8090/user/{0}/changes.amf", user.id));
+            
+            var loader:IHTTPLoader = loaderCreator.create();
             
             var promise:IHTTPPromise = loader.load(request);
             

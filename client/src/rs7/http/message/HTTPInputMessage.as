@@ -1,7 +1,9 @@
-package rs7.http
+package rs7.http.message
 {
     import flash.utils.ByteArray;
     import flash.utils.IDataInput;
+    
+    import rs7.http.http_internal;
     
     use namespace http_internal;
     

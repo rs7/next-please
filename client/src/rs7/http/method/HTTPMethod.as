@@ -1,4 +1,4 @@
-package rs7.http
+package rs7.http.method
 {
     import rs7.lang.enum.Enum;
     

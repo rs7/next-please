@@ -1,12 +1,15 @@
 package rs7.nextPlease.command
 {
-    import flash.events.Event;
-    import flash.net.URLLoader;
-    import flash.net.URLRequest;
+    import mx.utils.StringUtil;
     
     import robotlegs.bender.bundles.mvcs.Command;
     import robotlegs.bender.framework.api.IContext;
     
+    import rs7.http.loader.IHTTPLoader;
+    import rs7.http.method.HTTPMethod;
+    import rs7.http.promise.IHTTPPromise;
+    import rs7.http.request.IHTTPRequest;
+    import rs7.http.uri.URI;
     import rs7.nextPlease.entity.Record;
     import rs7.nextPlease.model.Model;
     
@@ -16,7 +19,13 @@ package rs7.nextPlease.command
         public var context:IContext;
         
         [Inject]
+        public var loader:IHTTPLoader;
+        
+        [Inject]
         public var model:Model;
+        
+        [Inject]
+        public var request:IHTTPRequest;
         
         override public function execute():void
         {
@@ -28,41 +37,42 @@ package rs7.nextPlease.command
                 userIDs.push(record.user.id);
             }
             
-            var request:URLRequest = new URLRequest(
-                "http://api.vk.com/method/users.get.xml?user_ids=" +
-                userIDs.join(",") + 
-                "&fields=photo_100"
+            request.method = HTTPMethod.GET;
+            request.uri = new URI(
+                StringUtil.substitute(
+                    "http://api.vk.com/method/users.get.xml?user_ids={0}&fields=photo_100",
+                    userIDs.join(",")
+                )
             );
-            var loader:URLLoader = new URLLoader();
-            loader.addEventListener(Event.COMPLETE, loader_completeHandler);
-            loader.load(request);
+            
+            var promise:IHTTPPromise = loader.load(request);
+            
+            promise.success.addOnce(onSuccess);
+            
+            function onSuccess():void
+            {
+                var response:XML = XML(promise.response.body.readUTFBytes(promise.response.body.bytesAvailable));
+                
+                for each(var record:Record in model.records)
+                {
+                    var searchResult:XMLList = response.user.(uid == record.user.id);
+                    
+                    if (searchResult.length() == 0)
+                    {
+                        continue;
+                    }
+                    
+                    var userXML:XML = searchResult[0];
+                    record.user.name = StringUtil.substitute("{0} {1}", userXML.first_name, userXML.last_name);
+                    record.user.photoURL = userXML.photo_100;
+                }
+                release();
+            }
         }
         
         private function release():void
         {
             context.release(this);
-        }
-        
-        private function loader_completeHandler(event:Event):void
-        {
-            var loader:URLLoader = URLLoader(event.currentTarget);
-            var response:XML = XML(loader.data);
-            
-            for each(var record:Record in model.records)
-            {
-                var searchResult:XMLList = response.user.(uid == record.user.id);
-                
-                if (searchResult.length() == 0)
-                {
-                    continue;
-                }
-                
-                var userXML:XML = searchResult[0];
-                record.user.name = userXML.first_name + " " + userXML.last_name;
-                record.user.photoURL = userXML.photo_100;
-            }
-            
-            release();
         }
     }
 }

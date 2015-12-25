@@ -1,4 +1,4 @@
-package rs7.http
+package rs7.http.message
 {
     import flash.utils.IDataOutput;
     

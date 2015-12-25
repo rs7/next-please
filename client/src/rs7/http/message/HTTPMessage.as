@@ -1,7 +1,8 @@
-package rs7.http
+package rs7.http.message
 {
     import rs7.http.header.HTTPHeaders;
     import rs7.http.header.IHTTPHeaders;
+    import rs7.http.http_internal;
     
     use namespace http_internal;
     

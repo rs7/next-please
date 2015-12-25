@@ -1,5 +1,7 @@
-package rs7.http
+package rs7.http.response
 {
+    import rs7.http.http_internal;
+    import rs7.http.message.HTTPInputMessage;
     import rs7.http.status.HTTPStatus;
     
     use namespace http_internal;

@@ -7,10 +7,14 @@ package rs7.nextPlease.config
     import robotlegs.bender.framework.api.IConfig;
     import robotlegs.bender.framework.api.IInjector;
     
-    import rs7.http.HTTPRequestCreator;
-    import rs7.http.IHTTPRequestCreator;
     import rs7.http.loader.HTTPLoader;
+    import rs7.http.loader.HTTPLoaderCreator;
     import rs7.http.loader.IHTTPLoader;
+    import rs7.http.loader.IHTTPLoaderCreator;
+    import rs7.http.request.HTTPRequest;
+    import rs7.http.request.HTTPRequestCreator;
+    import rs7.http.request.IHTTPRequest;
+    import rs7.http.request.IHTTPRequestCreator;
     import rs7.nextPlease.command.SetHistoryCommand;
     import rs7.nextPlease.command.SetVKInfoUserCommand;
     import rs7.nextPlease.command.ShowMainCommand;
@@ -38,13 +42,19 @@ package rs7.nextPlease.config
         
         public function configure():void
         {
-            injector.map(IHTTPLoader).toType(HTTPLoader);
-            injector.map(IHTTPRequestCreator).toSingleton(HTTPRequestCreator);
-            
+            httpComponents();
             models();
             mediators();
             mapCommands();
             runCommands();
+        }
+        
+        private function httpComponents():void
+        {
+            injector.map(IHTTPLoader).toType(HTTPLoader);
+            injector.map(IHTTPRequest).toType(HTTPRequest);
+            injector.map(IHTTPLoaderCreator).toSingleton(HTTPLoaderCreator);
+            injector.map(IHTTPRequestCreator).toSingleton(HTTPRequestCreator);
         }
         
         private function mapCommands():void

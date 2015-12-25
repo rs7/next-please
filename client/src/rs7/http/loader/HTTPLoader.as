@@ -12,16 +12,16 @@ package rs7.http.loader
     import flash.net.URLRequestMethod;
     import flash.utils.ByteArray;
     
-    import rs7.http.HTTPMethod;
-    import rs7.http.HTTPResponse;
-    import rs7.http.IHTTPRequest;
     import rs7.http.header.HTTPHeader;
     import rs7.http.header.HTTPHeaders;
     import rs7.http.header.HTTPHeadersNames;
     import rs7.http.header.IHTTPHeader;
     import rs7.http.http_internal;
+    import rs7.http.method.HTTPMethod;
     import rs7.http.promise.HTTPPromise;
     import rs7.http.promise.IHTTPPromise;
+    import rs7.http.request.IHTTPRequest;
+    import rs7.http.response.HTTPResponse;
     import rs7.http.status.HTTPStatus;
     import rs7.lang.enum.EnumMapper;
     
@@ -133,17 +133,24 @@ package rs7.http.loader
         {
             _response.http_internal::status = HTTPStatus(EnumMapper.instance.getEnum(HTTPStatus, event.status));
             
-            /*var headers:Array = event.responseHeaders.filter(
-                function convertHeader(urlRequestHeader:URLRequestHeader, ..._):IHTTPHeader
-                {
-                    var httpHeader:HTTPHeader = new HTTPHeader();
-                    httpHeader.name = urlRequestHeader.name;
-                    httpHeader.value = urlRequestHeader.value;
-                    return httpHeader;
-                }
-            );*/
+            var headers:Array = [];
             
-            _response.http_internal::headers = new HTTPHeaders();
+            if (event.hasOwnProperty("responseHeaders"))
+            {
+                headers = (
+                event["responseHeaders"] as Array
+                ).filter(
+                    function convertHeader(urlRequestHeader:URLRequestHeader, ..._):IHTTPHeader
+                    {
+                        var httpHeader:HTTPHeader = new HTTPHeader();
+                        httpHeader.name = urlRequestHeader.name;
+                        httpHeader.value = urlRequestHeader.value;
+                        return httpHeader;
+                    }
+                );
+            }
+            
+            _response.http_internal::headers = new HTTPHeaders(headers);
         }
         
         private function loader_ioErrorHandler(event:IOErrorEvent):void

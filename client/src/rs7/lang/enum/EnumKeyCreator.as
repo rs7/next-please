@@ -29,7 +29,7 @@ package rs7.lang.enum
         private function createMultiKey(source:Array):String
         {
             return source.filter(
-                function (sourceItem:*, ..._) : String
+                function (sourceItem:*, ..._):String
                 {
                     return createSingleKey(sourceItem);
                 }

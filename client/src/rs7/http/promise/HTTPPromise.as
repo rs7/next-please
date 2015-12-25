@@ -2,7 +2,7 @@ package rs7.http.promise
 {
     import org.osflash.signals.Promise;
     
-    import rs7.http.IHTTPResponse;
+    import rs7.http.response.IHTTPResponse;
     import rs7.http.http_internal;
     
     use namespace http_internal;

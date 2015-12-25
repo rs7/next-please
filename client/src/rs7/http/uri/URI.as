@@ -1,4 +1,4 @@
-package rs7.http
+package rs7.http.uri
 {
     public class URI
     {
