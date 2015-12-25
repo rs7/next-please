@@ -20,7 +20,7 @@ repositories {
             username bitbucketLogin
             password bitbucketPassword
         }
-        url 'https://api.bitbucket.org/1.0/repositories/rs7/next-please-repo/rawKey/master/'
+        url 'https://api.bitbucket.org/1.0/repositories/rs7/next-please-repo/raw/master/'
     }
 }
 
