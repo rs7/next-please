@@ -35,7 +35,7 @@ ext {
 
 dependencies {
     internal name: 'robotlegs-framework', version: '2.2.1', group: 'robotlegs', ext: 'swc'
-    internal name: 'signals', version: '0.9-BETA', group: 'org.osflash', ext: 'swc'
+    internal name: 'as3-signals', version: '0.9-BETA', group: 'org.osflash', ext: 'swc'
     internal name: 'spicelib-reflect', version: '3.0.0', group: 'org.spicefactory.lib', ext: 'swc'
     internal name: 'spicelib-util', version: '3.0.0', group: 'org.spicefactory.lib', ext: 'swc'
     playerglobal name: 'playerglobal', version: swfVersion, group: 'com.adobe.flex.framework', ext: 'swc'
