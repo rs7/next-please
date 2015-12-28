@@ -24,6 +24,7 @@ package rs7.http.loader
     import rs7.http.response.HTTPResponse;
     import rs7.http.status.HTTPStatus;
     import rs7.lang.enum.EnumMapper;
+    import rs7.util.error.errorEventToError;
     
     use namespace http_internal;
     
@@ -42,9 +43,9 @@ package rs7.http.loader
             _loader.removeEventListener(HTTPStatusEvent.HTTP_STATUS, loader_httpStatusHandler);
         }
         
-        private function fail():void
+        private function fail(error:Error):void
         {
-            _promise.fail.dispatch();
+            _promise.fail.dispatch(error);
         }
         
         public function load(request:IHTTPRequest):IHTTPPromise
@@ -70,7 +71,9 @@ package rs7.http.loader
                     break;
                 case HTTPMethod.DELETE:
                     _request.method = URLRequestMethod.POST;
-                    requestHeaders.push(new HTTPHeader(HTTPHeadersNames.X_HTTP_METHOD_OVERRIDE, HTTPMethod.DELETE.name));
+                    requestHeaders.push(
+                        new HTTPHeader(HTTPHeadersNames.X_HTTP_METHOD_OVERRIDE, HTTPMethod.DELETE.name)
+                    );
                     break;
             }
             
@@ -95,7 +98,7 @@ package rs7.http.loader
             }
             catch (error:Error)
             {
-                fail();
+                fail(error);
                 return _promise;
             }
             
@@ -114,7 +117,7 @@ package rs7.http.loader
         private function success():void
         {
             _response.http_internal::body = ByteArray(_loader.data);
-            _promise.success.dispatch();
+            _promise.success.dispatch(_response);
         }
         
         private function loader_completeHandler(event:Event):void
@@ -126,7 +129,7 @@ package rs7.http.loader
         private function loader_errorHandler(event:ErrorEvent):void
         {
             cleanupListeners();
-            fail();
+            fail(errorEventToError(event));
         }
         
         private function loader_httpStatusHandler(event:HTTPStatusEvent):void
@@ -138,7 +141,7 @@ package rs7.http.loader
             if (event.hasOwnProperty("responseHeaders"))
             {
                 headers = (
-                event["responseHeaders"] as Array
+                    event["responseHeaders"] as Array
                 ).filter(
                     function convertHeader(urlRequestHeader:URLRequestHeader, ..._):IHTTPHeader
                     {
