@@ -34,6 +34,7 @@ ext {
 }
 
 dependencies {
+    internal name: 'as3-signals', version: '0.9-BETA', group: 'org.osflash', ext: 'swc'
     internal name: 'promise-as3', version: '1.0.0-SNAPSHOT', group: 'com.codecatalyst', ext: 'swc'
     internal name: 'robotlegs-framework', version: '2.2.1', group: 'robotlegs', ext: 'swc'
     internal name: 'spicelib-reflect', version: '3.0.0', group: 'org.spicefactory.lib', ext: 'swc'
