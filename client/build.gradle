@@ -36,6 +36,8 @@ ext {
 dependencies {
     internal name: 'promise-as3', version: '1.0.0-SNAPSHOT', group: 'com.codecatalyst', ext: 'swc'
     internal name: 'robotlegs-framework', version: '2.2.1', group: 'robotlegs', ext: 'swc'
+    internal name: 'spicelib-reflect', version: '3.0.0', group: 'org.spicefactory.lib', ext: 'swc'
+    internal name: 'spicelib-util', version: '3.0.0', group: 'org.spicefactory.lib', ext: 'swc'
     playerglobal name: 'playerglobal', version: swfVersion, group: 'com.adobe.flex.framework', ext: 'swc'
 }
 
