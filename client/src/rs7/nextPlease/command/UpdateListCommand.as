@@ -2,16 +2,17 @@ package rs7.nextPlease.command
 {
     import flash.events.Event;
     import flash.events.IEventDispatcher;
-    import flash.net.URLLoader;
-    import flash.net.URLLoaderDataFormat;
-    import flash.net.URLRequest;
-    import flash.utils.ByteArray;
     
     import mx.collections.ArrayCollection;
     
     import robotlegs.bender.bundles.mvcs.Command;
     import robotlegs.bender.framework.api.IContext;
     
+    import rs7.http.loader.IHTTPLoader;
+    import rs7.http.method.HTTPMethod;
+    import rs7.http.promise.IHTTPPromise;
+    import rs7.http.request.IHTTPRequest;
+    import rs7.http.uri.URI;
     import rs7.nextPlease.model.Model;
     
     public class UpdateListCommand extends Command
@@ -23,33 +24,37 @@ package rs7.nextPlease.command
         public var eventDispatcher:IEventDispatcher;
         
         [Inject]
+        public var loader:IHTTPLoader;
+        
+        [Inject]
         public var model:Model;
+        
+        [Inject]
+        public var request:IHTTPRequest;
         
         override public function execute():void
         {
             context.detain(this);
             
-            var request:URLRequest = new URLRequest("http://localhost:8090/record-book/1/records.amf");
-            var loader:URLLoader = new URLLoader();
-            loader.addEventListener(Event.COMPLETE, loader_completeHandler);
-            loader.dataFormat = URLLoaderDataFormat.BINARY;
-            loader.load(request);
+            request.method = HTTPMethod.GET;
+            request.uri = new URI("http://localhost:8090/record-book/1/records.amf");
+            
+            var promise:IHTTPPromise = loader.load(request);
+            
+            promise.success.addOnce(onSuccess);
+            
+            function onSuccess():void
+            {
+                var records:ArrayCollection = ArrayCollection(promise.response.body.readObject());
+                model.records = records;
+                eventDispatcher.dispatchEvent(new Event(Model.RECORDS_UPDATE_EVENT_TYPE));
+                release();
+            }
         }
         
         private function release():void
         {
             context.release(this);
-        }
-        
-        private function loader_completeHandler(event:Event):void
-        {
-            var loader:URLLoader = URLLoader(event.currentTarget);
-            var records:ArrayCollection = ArrayCollection(ByteArray(loader.data).readObject());
-            model.records = records;
-            
-            eventDispatcher.dispatchEvent(new Event(Model.RECORDS_UPDATE_EVENT_TYPE));
-            
-            release();
         }
     }
 }
