@@ -1,8 +1,5 @@
 package rs7.nextPlease.command
 {
-    import flash.events.Event;
-    import flash.events.IEventDispatcher;
-    
     import mx.collections.ArrayCollection;
     
     import robotlegs.bender.bundles.mvcs.Command;
@@ -19,9 +16,6 @@ package rs7.nextPlease.command
     {
         [Inject]
         public var context:IContext;
-        
-        [Inject]
-        public var eventDispatcher:IEventDispatcher;
         
         [Inject]
         public var loader:IHTTPLoader;
@@ -47,7 +41,6 @@ package rs7.nextPlease.command
             {
                 var records:ArrayCollection = ArrayCollection(promise.response.body.readObject());
                 model.records = records;
-                eventDispatcher.dispatchEvent(new Event(Model.RECORDS_UPDATE_EVENT_TYPE));
                 release();
             }
         }

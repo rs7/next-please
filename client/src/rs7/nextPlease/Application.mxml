@@ -6,11 +6,13 @@
     xmlns:mvcs="robotlegs.bender.bundles.mvcs.*"
     xmlns:rl="http://ns.robotlegs.org/flex/rl2"
     xmlns:s="library://ns.adobe.com/flex/spark"
+    xmlns:signalCommandMap="robotlegs.bender.extensions.signalCommandMap.*"
 >
     <fx:Declarations>
         <rl:ContextBuilder>
             <mvcs:MVCSBundle/>
             <directCommandMap:DirectCommandMapExtension/>
+            <signalCommandMap:SignalCommandMapExtension/>
             <config:Config/>
         </rl:ContextBuilder>
     </fx:Declarations>

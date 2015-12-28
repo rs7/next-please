@@ -4,6 +4,7 @@ package rs7.nextPlease.config
     import robotlegs.bender.extensions.directCommandMap.api.IDirectCommandMap;
     import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
     import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
+    import robotlegs.bender.extensions.signalCommandMap.api.ISignalCommandMap;
     import robotlegs.bender.framework.api.IConfig;
     import robotlegs.bender.framework.api.IInjector;
     
@@ -20,6 +21,7 @@ package rs7.nextPlease.config
     import rs7.nextPlease.command.ShowMainCommand;
     import rs7.nextPlease.command.UpdateListCommand;
     import rs7.nextPlease.model.Model;
+    import rs7.nextPlease.signal.RecordsUpdateSignal;
     import rs7.nextPlease.view.RecordBookMediator;
     import rs7.nextPlease.view.RecordBookView;
     
@@ -40,6 +42,9 @@ package rs7.nextPlease.config
         [Inject]
         public var mediatorMap:IMediatorMap;
         
+        [Inject]
+        public var signalCommandMap:ISignalCommandMap;
+        
         public function configure():void
         {
             httpComponents();
@@ -59,8 +64,8 @@ package rs7.nextPlease.config
         
         private function mapCommands():void
         {
-            commandMap.map(Model.RECORDS_UPDATE_EVENT_TYPE).toCommand(SetVKInfoUserCommand);
-            commandMap.map(Model.RECORDS_UPDATE_EVENT_TYPE).toCommand(SetHistoryCommand);
+            signalCommandMap.map(RecordsUpdateSignal).toCommand(SetVKInfoUserCommand);
+            signalCommandMap.map(RecordsUpdateSignal).toCommand(SetHistoryCommand);
         }
         
         private function mediators():void
