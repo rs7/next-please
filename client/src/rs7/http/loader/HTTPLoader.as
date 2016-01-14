@@ -1,5 +1,8 @@
 package rs7.http.loader
 {
+    import com.codecatalyst.promise.Deferred;
+    import com.codecatalyst.promise.Promise;
+    
     import flash.events.ErrorEvent;
     import flash.events.Event;
     import flash.events.HTTPStatusEvent;
@@ -18,8 +21,6 @@ package rs7.http.loader
     import rs7.http.header.IHTTPHeader;
     import rs7.http.http_internal;
     import rs7.http.method.HTTPMethod;
-    import rs7.http.promise.HTTPPromise;
-    import rs7.http.promise.IHTTPPromise;
     import rs7.http.request.IHTTPRequest;
     import rs7.http.response.HTTPResponse;
     import rs7.http.status.HTTPStatus;
@@ -30,94 +31,82 @@ package rs7.http.loader
     
     public class HTTPLoader implements IHTTPLoader
     {
-        private var _loader:URLLoader;
-        private var _promise:HTTPPromise;
-        private var _request:URLRequest;
-        private var _response:HTTPResponse;
+        //запрещены загаловки: Accept-Charset, Accept-Encoding, Accept-Ranges, Age, Allow, Allowed, Authorization, Charge-To, Connect, Connection, Content-Length, Content-Location, Content-Range, Cookie, Date, Delete, ETag, Expect, Get, Head, Host, If-Modified-Since, Keep-Alive, Last-Modified, Location, Max-Forwards, Options, Origin, Post, Proxy-Authenticate, Proxy-Authorization, Proxy-Connection, Public, Put, Range, Referer, Request-Range, Retry-After, Server, TE, Trace, Trailer, Transfer-Encoding, Upgrade, URI, User-Agent, Vary, Via, Warning, WWW-Authenticate, x-flash-version,
+        //todo: обработать запрещённые заголовки
+        
+        private var deferred:Deferred;
+        private var loader:URLLoader;
+        private var response:HTTPResponse;
         
         private function cleanupListeners():void
         {
-            _loader.removeEventListener(Event.COMPLETE, loader_completeHandler);
-            _loader.removeEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
-            _loader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
-            _loader.removeEventListener(HTTPStatusEvent.HTTP_STATUS, loader_httpStatusHandler);
+            loader.removeEventListener(Event.COMPLETE, loader_completeHandler);
+            loader.removeEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
+            loader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
+            loader.removeEventListener(HTTPStatusEvent.HTTP_STATUS, loader_httpStatusHandler);
         }
         
         private function fail(error:Error):void
         {
-            _promise.fail.dispatch(error);
+            deferred.reject(error);
         }
         
-        public function load(request:IHTTPRequest):IHTTPPromise
+        public function load(request:IHTTPRequest):Promise
         {
-            _promise = new HTTPPromise();
+            deferred = new Deferred();
             
-            _request = new URLRequest();
-            _request.url = request.uri.value;
+            var urlRequest:URLRequest = new URLRequest();
+            urlRequest.url = request.uri.value;
             
-            var requestHeaders:Array = [];
+            urlRequest.method = URLRequestMethod.POST;
+            
+            var requestHeaders:Array = request.headers.source;
             
             switch (request.method)
             {
-                case HTTPMethod.GET:
-                    _request.method = URLRequestMethod.GET;
-                    break;
-                case HTTPMethod.POST:
-                    _request.method = URLRequestMethod.POST;
-                    break;
-                case HTTPMethod.PUT:
-                    _request.method = URLRequestMethod.POST;
-                    requestHeaders.push(new HTTPHeader(HTTPHeadersNames.X_HTTP_METHOD_OVERRIDE, HTTPMethod.PUT.name));
-                    break;
                 case HTTPMethod.DELETE:
-                    _request.method = URLRequestMethod.POST;
-                    requestHeaders.push(
-                        new HTTPHeader(HTTPHeadersNames.X_HTTP_METHOD_OVERRIDE, HTTPMethod.DELETE.name)
-                    );
+                case HTTPMethod.GET:
+                case HTTPMethod.PUT:
+                    requestHeaders.push(new HTTPHeader(HTTPHeadersNames.X_HTTP_METHOD_OVERRIDE, request.method.name));
                     break;
             }
             
-            _request.requestHeaders = requestHeaders.filter(
+            urlRequest.requestHeaders = requestHeaders.map(
                 function convertHeader(httpHeader:IHTTPHeader, ..._):URLRequestHeader
                 {
-                    var urlRequestHeader:URLRequestHeader = new URLRequestHeader();
-                    urlRequestHeader.name = httpHeader.name;
-                    urlRequestHeader.value = httpHeader.value;
-                    return urlRequestHeader;
+                    return new URLRequestHeader(httpHeader.name, httpHeader.value);
                 }
             );
             
-            _request.data = request.body;
+            urlRequest.data = request.body;
             
-            _loader = new URLLoader();
-            _loader.dataFormat = URLLoaderDataFormat.BINARY;
+            loader = new URLLoader();
+            loader.dataFormat = URLLoaderDataFormat.BINARY;
             
             try
             {
-                _loader.load(_request);
+                loader.load(urlRequest);
             }
             catch (error:Error)
             {
                 fail(error);
-                return _promise;
+                return deferred.promise;
             }
             
-            _response = new HTTPResponse();
+            response = new HTTPResponse();
             
-            _promise.http_internal::response = _response;
+            loader.addEventListener(Event.COMPLETE, loader_completeHandler);
+            loader.addEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
+            loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
+            loader.addEventListener(HTTPStatusEvent.HTTP_STATUS, loader_httpStatusHandler);
             
-            _loader.addEventListener(Event.COMPLETE, loader_completeHandler);
-            _loader.addEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
-            _loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
-            _loader.addEventListener(HTTPStatusEvent.HTTP_STATUS, loader_httpStatusHandler);
-            
-            return _promise;
+            return deferred.promise;
         }
         
         private function success():void
         {
-            _response.http_internal::body = ByteArray(_loader.data);
-            _promise.success.dispatch(_response);
+            response.http_internal::body = ByteArray(loader.data);
+            deferred.resolve(response);
         }
         
         private function loader_completeHandler(event:Event):void
@@ -134,7 +123,7 @@ package rs7.http.loader
         
         private function loader_httpStatusHandler(event:HTTPStatusEvent):void
         {
-            _response.http_internal::status = HTTPStatus(EnumMapper.instance.getEnum(HTTPStatus, event.status));
+            response.http_internal::status = HTTPStatus(EnumMapper.instance.getEnum(HTTPStatus, event.status));
             
             var headers:Array = [];
             
@@ -142,18 +131,15 @@ package rs7.http.loader
             {
                 headers = (
                     event["responseHeaders"] as Array
-                ).filter(
+                ).map(
                     function convertHeader(urlRequestHeader:URLRequestHeader, ..._):IHTTPHeader
                     {
-                        var httpHeader:HTTPHeader = new HTTPHeader();
-                        httpHeader.name = urlRequestHeader.name;
-                        httpHeader.value = urlRequestHeader.value;
-                        return httpHeader;
+                        return new HTTPHeader(urlRequestHeader.name, urlRequestHeader.value);
                     }
                 );
             }
             
-            _response.http_internal::headers = new HTTPHeaders(headers);
+            response.http_internal::headers = new HTTPHeaders(headers);
         }
         
         private function loader_ioErrorHandler(event:IOErrorEvent):void
