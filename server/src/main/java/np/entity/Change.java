@@ -2,10 +2,9 @@ package np.entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -22,12 +21,9 @@ public class Change {
 	@XStreamAsAttribute
 	public int id;
 
-	@JoinColumn(name = "relation_id")
-	@ManyToOne
-	public Relation relation;
+	@Column(columnDefinition = "TINYINT", name = "relation_id")
+	public int relationId;
 
-	@JoinColumn(name = "user_id")
-	@ManyToOne
-	public User user;
-
+	@Column(name = "user_id")
+	public int userId;
 }

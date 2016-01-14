@@ -18,4 +18,6 @@ public class RecordBook {
 	@XStreamAsAttribute
 	public int id;
 
+	@Column(name = "title_key")
+	public String titleKey;
 }

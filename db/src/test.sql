@@ -38,9 +38,9 @@ VALUES
 	(1052662, 7, CURRENT_TIMESTAMP - INTERVAL 11 YEAR)
 ;
 
-INSERT INTO `record_book` (`id`)
+INSERT INTO `record_book` (`id`, `title_key`)
 VALUES
-	(1)
+	(1, 'record_book.main.title')
 ;
 
 INSERT INTO `record` (`record_book_id`, `user_id`, `date`)

@@ -2,10 +2,9 @@ package np.entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -22,12 +21,10 @@ public class Record {
 	@XStreamAsAttribute
 	public int id;
 
-	@JoinColumn(name = "record_book_id")
-	@ManyToOne
-	public RecordBook recordBook;
+	@Column(columnDefinition = "TINYINT", name = "record_book_id")
+	public int recordBookId;
 
-	@JoinColumn(name = "user_id")
-	@ManyToOne
-	public User user;
+	@Column(name = "user_id")
+	public int userId;
 
 }

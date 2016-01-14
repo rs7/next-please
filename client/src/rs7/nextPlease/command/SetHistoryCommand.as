@@ -4,8 +4,8 @@ package rs7.nextPlease.command
     import robotlegs.bender.extensions.commandCenter.api.CommandPayload;
     import robotlegs.bender.extensions.directCommandMap.api.IDirectCommandMap;
     
-    import rs7.nextPlease.entity.Record;
-    import rs7.nextPlease.entity.User;
+    import rs7.nextPlease.entity.impl.model.Record;
+    import rs7.nextPlease.entity.impl.model.User;
     import rs7.nextPlease.model.Model;
     
     public class SetHistoryCommand extends Command
@@ -18,12 +18,12 @@ package rs7.nextPlease.command
         
         override public function execute():void
         {
-            for each(var record:Record in model.records)
+            for each(var record:Record in model.mainRecordBook.records)
             {
                 var payload:CommandPayload = new CommandPayload();
                 payload.addPayload(record.user, User);
                 
-                directCommandMap.map(UpdateUserHistory).execute(payload);
+                directCommandMap.map(UpdateUserHistoryCommand).execute(payload);
             }
         }
     }

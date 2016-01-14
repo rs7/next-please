@@ -7,10 +7,19 @@ package rs7.nextPlease.command
     import rs7.http.response.IHTTPResponse;
     import rs7.http.uri.URI;
     import rs7.nextPlease.command.http.HTTPCommand;
+    import rs7.nextPlease.entity.EntityIdentifier;
+    import rs7.nextPlease.entity.EntityType;
+    import rs7.nextPlease.entity.impl.model.Record;
+    import rs7.nextPlease.entity.impl.model.RecordBook;
+    import rs7.nextPlease.entity.manager.EntityManager;
+    import rs7.nextPlease.entity.remote.RemoteRecord;
     import rs7.nextPlease.model.Model;
     
     public class UpdateListCommand extends HTTPCommand
     {
+        [Inject]
+        public var entityManager:EntityManager;
+        
         [Inject]
         public var model:Model;
         
@@ -22,8 +31,18 @@ package rs7.nextPlease.command
         
         override protected function onSuccess(response:IHTTPResponse):void
         {
-            var records:ArrayCollection = ArrayCollection(response.body.readObject());
-            model.records = records;
+            var rawRecords:ArrayCollection = ArrayCollection(response.body.readObject());
+            
+            var records:ArrayCollection = new ArrayCollection(
+                rawRecords.source.map(
+                    function (remoteRecord:RemoteRecord, ..._):Record
+                    {
+                        return Record(entityManager.getEntity(new EntityIdentifier(EntityType.RECORD, remoteRecord.id)));;
+                    }
+                )
+            );
+            
+            RecordBook(model.mainRecordBook).records = records;
         }
     }
 }

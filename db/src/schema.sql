@@ -26,7 +26,8 @@ CREATE TABLE `change` (
 );
 
 CREATE TABLE `record_book` (
-	`id` TINYINT UNSIGNED NOT NULL KEY
+	`id` TINYINT UNSIGNED NOT NULL KEY,
+	`title_key` VARCHAR(64)
 );
 
 CREATE TABLE `record` (

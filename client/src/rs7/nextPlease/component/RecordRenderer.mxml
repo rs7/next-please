@@ -8,7 +8,7 @@
         <s:VGroup>
             <s:Label text="{record.user.name}"/>
             <s:Label text="{dateTimeFormatter.format(record.date)}"/>
-            <s:DataGroup dataProvider="{record.user.changes}">
+            <!--<s:DataGroup dataProvider="{record.user.changes}">
                 <s:layout>
                     <s:VerticalLayout/>
                 </s:layout>
@@ -17,14 +17,14 @@
                         <s:ItemRenderer>
                             <fx:Script>
                                     <![CDATA[
-                                        import rs7.nextPlease.entity.Change;
-                                        
-                                        [Bindable("dataChange")]
-                                        public function get change():Change
-                                        {
-                                            return Change(data);
-                                        }
-                                    ]]>
+                                import rs7.nextPlease.entity.impl.Change;
+    
+                                [Bindable("dataChange")]
+                                public function get change():Change
+                                {
+                                    return Change(data);
+                                }
+                                ]]>
                                 </fx:Script>
                             <s:HGroup>
                                 <s:Label text="{change.relation.titleKey}"/>
@@ -33,7 +33,7 @@
                         </s:ItemRenderer>
                     </fx:Component>
                 </s:itemRenderer>
-            </s:DataGroup>
+            </s:DataGroup>-->
         </s:VGroup>
     </s:HGroup>
     
@@ -43,13 +43,13 @@
     
     <fx:Script>
         <![CDATA[
-            import rs7.nextPlease.entity.Record;
+        import rs7.nextPlease.entity.impl.model.Record;
 
-            [Bindable("dataChange")]
-            public function get record():Record
-            {
-                return Record(data);
-            }
+        [Bindable("dataChange")]
+        public function get record():Record
+        {
+            return Record(data);
+        }
         ]]>
     </fx:Script>
 </s:ItemRenderer>

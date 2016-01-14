@@ -16,7 +16,7 @@ package rs7.nextPlease.view
         
         override public function initialize():void
         {
-            BindingUtils.bindProperty(view, "dataProvider", model, "records");
+            BindingUtils.bindProperty(view, "recordBook", model, "mainRecordBook");
         }
     }
 }

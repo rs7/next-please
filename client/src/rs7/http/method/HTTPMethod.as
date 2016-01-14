@@ -1,6 +1,6 @@
 package rs7.http.method
 {
-    import rs7.lang.enum.Enum;
+    import rs7.util.enum.Enum;
     
     public class HTTPMethod extends Enum
     {

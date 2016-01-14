@@ -3,20 +3,25 @@
     xmlns:fx="http://ns.adobe.com/mxml/2009"
     xmlns:s="library://ns.adobe.com/flex/spark"
 >
-    <s:Scroller width="100%" height="100%">
-        <s:DataGroup dataProvider="{dataProvider}" itemRenderer="rs7.nextPlease.component.RecordRenderer">
+    <s:layout>
+        <s:VerticalLayout/>
+    </s:layout>
+    
+    <s:Label text="{recordBook.titleKey}"/>
+    <!--<s:Scroller height="100%" width="100%">
+        <s:DataGroup dataProvider="{recordBook.records}" itemRenderer="rs7.nextPlease.component.RecordRenderer">
             <s:layout>
                 <s:VerticalLayout/>
             </s:layout>
         </s:DataGroup>
-    </s:Scroller>
+    </s:Scroller>-->
     
     <fx:Script>
         <![CDATA[
-            import mx.collections.IList;
-            
-            [Bindable]
-            public var dataProvider:IList;
+        import rs7.nextPlease.entity.impl.model.RecordBook;
+
+        [Bindable]
+        public var recordBook:RecordBook;
         ]]>
     </fx:Script>
 </s:SkinnableContainer>

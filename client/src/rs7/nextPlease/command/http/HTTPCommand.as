@@ -3,10 +3,10 @@ package rs7.nextPlease.command.http
     import rs7.http.loader.IHTTPLoader;
     import rs7.http.request.IHTTPRequest;
     import rs7.http.response.IHTTPResponse;
-    import rs7.lang.abstract.AbstractMethodError;
-    import rs7.robotlegs.bender.extensions.asyncCommand.impl.AsyncCommand;
+    import rs7.util.abstract.AbstractMethodError;
+    import rs7.robotlegs.bender.extensions.promiseCommand.impl.PromiseCommand;
     
-    public class HTTPCommand extends AsyncCommand
+    public class HTTPCommand extends PromiseCommand
     {
         [Inject]
         public var loader:IHTTPLoader;
@@ -31,24 +31,23 @@ package rs7.nextPlease.command.http
         protected function onFail(error:Error):void
         {
             //override in subclass if need
-            throw error;
+            reject(error);
         }
         
         private function onFailHandler(error:Error):void
         {
             onFail(error);
-            release();
         }
         
         protected function onSuccess(response:IHTTPResponse):void
         {
             //override in subclass if need
+            resolve(response);
         }
         
         private function onSuccessHandler(response:IHTTPResponse):void
         {
             onSuccess(response);
-            release();
         }
     }
 }

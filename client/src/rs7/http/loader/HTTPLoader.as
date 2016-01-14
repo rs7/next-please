@@ -24,7 +24,7 @@ package rs7.http.loader
     import rs7.http.request.IHTTPRequest;
     import rs7.http.response.HTTPResponse;
     import rs7.http.status.HTTPStatus;
-    import rs7.lang.enum.EnumMapper;
+    import rs7.util.enum.EnumHelper;
     import rs7.util.error.errorEventToError;
     
     use namespace http_internal;
@@ -123,7 +123,7 @@ package rs7.http.loader
         
         private function loader_httpStatusHandler(event:HTTPStatusEvent):void
         {
-            response.http_internal::status = HTTPStatus(EnumMapper.instance.getEnum(HTTPStatus, event.status));
+            response.http_internal::status = HTTPStatus(EnumHelper.instance.getEnum(HTTPStatus, event.status));
             
             var headers:Array = [];
             

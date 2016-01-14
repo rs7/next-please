@@ -6,8 +6,8 @@ package rs7.nextPlease.command
     import rs7.http.request.IHTTPRequest;
     import rs7.http.response.IHTTPResponse;
     import rs7.http.uri.URI;
-    import rs7.nextPlease.entity.Record;
     import rs7.nextPlease.command.http.HTTPCommand;
+    import rs7.nextPlease.entity.impl.model.Record;
     import rs7.nextPlease.model.Model;
     
     public class SetVKInfoUserCommand extends HTTPCommand
@@ -18,9 +18,9 @@ package rs7.nextPlease.command
         override protected function initRequest(request:IHTTPRequest):void
         {
             var userIDs:Array = [];
-            for each(var record:Record in model.records)
+            for each(var record:Record in model.mainRecordBook.records)
             {
-                userIDs.push(record.user.id);
+                userIDs.push(record.user.vkId);
             }
             
             request.method = HTTPMethod.GET;
@@ -36,7 +36,7 @@ package rs7.nextPlease.command
         {
             var responseXML:XML = XML(response.body.readUTFBytes(response.body.bytesAvailable));
             
-            for each(var record:Record in model.records)
+            for each(var record:Record in model.mainRecordBook.records)
             {
                 var searchResult:XMLList = responseXML.user.(uid == record.user.id);
                 
@@ -46,8 +46,8 @@ package rs7.nextPlease.command
                 }
                 
                 var userXML:XML = searchResult[0];
-                record.user.name = StringUtil.substitute("{0} {1}", userXML.first_name, userXML.last_name);
-                record.user.photoURL = userXML.photo_100;
+                //record.user.name = StringUtil.substitute("{0} {1}", userXML.first_name, userXML.last_name);
+                //record.user.photoURL = userXML.photo_100;
             }
         }
     }

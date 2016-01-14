@@ -1,6 +1,6 @@
 package rs7.http.status
 {
-    import rs7.lang.enum.Enum;
+    import rs7.util.enum.Enum;
     
     internal class HTTPStatusGroup extends Enum
     {

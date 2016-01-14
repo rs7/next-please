@@ -12,13 +12,13 @@
     
     <fx:Script>
         <![CDATA[
-            import rs7.nextPlease.entity.User;
+        import rs7.nextPlease.entity.impl.model.User;
 
-            [Bindable("dataChange")]
-            public function get user():User
-            {
-                return User(data);
-            }
+        [Bindable("dataChange")]
+        public function get user():User
+        {
+            return User(data);
+        }
         ]]>
     </fx:Script>
 </s:ItemRenderer>
