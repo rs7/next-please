@@ -4,6 +4,7 @@
     xmlns:directCommandMap="robotlegs.bender.extensions.directCommandMap.*"
     xmlns:fx="http://ns.adobe.com/mxml/2009"
     xmlns:mvcs="robotlegs.bender.bundles.mvcs.*"
+    xmlns:promiseCommand="rs7.robotlegs.bender.extensions.promiseCommand.*"
     xmlns:rl="http://ns.robotlegs.org/flex/rl2"
     xmlns:s="library://ns.adobe.com/flex/spark"
     xmlns:signalCommandMap="robotlegs.bender.extensions.signalCommandMap.*"
@@ -12,6 +13,7 @@
         <rl:ContextBuilder>
             <mvcs:MVCSBundle/>
             <directCommandMap:DirectCommandMapExtension/>
+            <promiseCommand:PromiseCommandExtension/>
             <signalCommandMap:SignalCommandMapExtension/>
             <config:Config/>
         </rl:ContextBuilder>

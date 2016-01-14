@@ -6,6 +6,7 @@ package rs7.nextPlease.command
     import rs7.http.request.IHTTPRequest;
     import rs7.http.response.IHTTPResponse;
     import rs7.http.uri.URI;
+    import rs7.nextPlease.command.http.HTTPCommand;
     import rs7.nextPlease.model.Model;
     
     public class UpdateListCommand extends HTTPCommand

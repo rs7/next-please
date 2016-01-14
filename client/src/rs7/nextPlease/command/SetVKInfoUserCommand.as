@@ -7,6 +7,7 @@ package rs7.nextPlease.command
     import rs7.http.response.IHTTPResponse;
     import rs7.http.uri.URI;
     import rs7.nextPlease.entity.Record;
+    import rs7.nextPlease.command.http.HTTPCommand;
     import rs7.nextPlease.model.Model;
     
     public class SetVKInfoUserCommand extends HTTPCommand

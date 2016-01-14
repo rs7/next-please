@@ -1,28 +1,26 @@
-package rs7.nextPlease.command
+package rs7.nextPlease.command.http
 {
     import rs7.http.loader.IHTTPLoader;
-    import rs7.http.promise.IHTTPPromise;
     import rs7.http.request.IHTTPRequest;
     import rs7.http.response.IHTTPResponse;
     import rs7.lang.abstract.AbstractMethodError;
-    import rs7.robotlegs.AsyncCommand;
+    import rs7.robotlegs.bender.extensions.asyncCommand.impl.AsyncCommand;
     
     public class HTTPCommand extends AsyncCommand
     {
-        private var loader:IHTTPLoader;
+        [Inject]
+        public var loader:IHTTPLoader;
         
-        private var request:IHTTPRequest;
+        [Inject]
+        public var request:IHTTPRequest;
         
-        override public function execute():void
+        final override public function execute():void
         {
             detain();
             
             initRequest(request);
             
-            var promise:IHTTPPromise = loader.load(request);
-            
-            promise.success.addOnce(onSuccessHandler);
-            promise.fail.addOnce(onFailHandler);
+            loader.load(request).then(onSuccessHandler, onFailHandler);
         }
         
         protected function initRequest(request:IHTTPRequest):void
@@ -30,16 +28,10 @@ package rs7.nextPlease.command
             throw new AbstractMethodError();
         }
         
-        [Inject]
-        public final function initialize(loader:IHTTPLoader, request:IHTTPRequest):void
-        {
-            this.loader = loader;
-            this.request = request;
-        }
-        
         protected function onFail(error:Error):void
         {
             //override in subclass if need
+            throw error;
         }
         
         private function onFailHandler(error:Error):void
